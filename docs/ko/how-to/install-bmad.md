@@ -113,7 +113,7 @@ npx bmad-method@next install
 
 **플래그 사용:** 다음 섹션의 레시피가 일반적인 경우를 다룹니다.
 
-## 헤드리스 CI 설치
+## 헤드리스 CI 설치 {#headless-ci-installs}
 
 ### 플래그 참고자료
 

@@ -372,7 +372,7 @@ planning_artifacts = "/shared/org-planning-artifacts"
 
 엔터프라이즈 지향 레시피(디스패치하는 모든 워크플로우에 걸쳐 에이전트 형성, 조직 관례 강제, Confluence와 Jira에 출력 게시, 에이전트 로스터 커스터마이즈, 자체 출력 템플릿 적용)는 [조직을 위한 BMad 확장하기](./expand-bmad-for-your-org.md)를 참고하세요.
 
-## 문제 해결
+## 문제 해결 {#troubleshooting}
 
 **커스터마이즈가 적용되지 않나요?**
 
