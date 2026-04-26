@@ -31,6 +31,10 @@ export const locales = {
     label: 'Čeština',
     lang: 'cs-CZ',
   },
+  ko: {
+    label: '한국어',
+    lang: 'ko-KR',
+  },
 };
 
 /**

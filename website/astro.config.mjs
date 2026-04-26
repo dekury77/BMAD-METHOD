@@ -94,35 +94,35 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Welcome',
-          translations: { 'vi-VN': 'Chào mừng', 'zh-CN': '欢迎', 'fr-FR': 'Bienvenue', 'cs-CZ': 'Vítejte' },
+          translations: { 'vi-VN': 'Chào mừng', 'zh-CN': '欢迎', 'fr-FR': 'Bienvenue', 'cs-CZ': 'Vítejte', 'ko-KR': '환영합니다' },
           slug: 'index',
         },
         {
           label: 'Roadmap',
-          translations: { 'vi-VN': 'Lộ trình', 'zh-CN': '路线图', 'fr-FR': 'Feuille de route', 'cs-CZ': 'Plán rozvoje' },
+          translations: { 'vi-VN': 'Lộ trình', 'zh-CN': '路线图', 'fr-FR': 'Feuille de route', 'cs-CZ': 'Plán rozvoje', 'ko-KR': '로드맵' },
           slug: 'roadmap',
         },
         {
           label: 'Tutorials',
-          translations: { 'vi-VN': 'Hướng dẫn nhập môn', 'zh-CN': '教程', 'fr-FR': 'Tutoriels', 'cs-CZ': 'Tutoriály' },
+          translations: { 'vi-VN': 'Hướng dẫn nhập môn', 'zh-CN': '教程', 'fr-FR': 'Tutoriels', 'cs-CZ': 'Tutoriály', 'ko-KR': '튜토리얼' },
           collapsed: false,
           autogenerate: { directory: 'tutorials' },
         },
         {
           label: 'How-To Guides',
-          translations: { 'vi-VN': 'Hướng dẫn tác vụ', 'zh-CN': '操作指南', 'fr-FR': 'Guides pratiques', 'cs-CZ': 'Praktické návody' },
+          translations: { 'vi-VN': 'Hướng dẫn tác vụ', 'zh-CN': '操作指南', 'fr-FR': 'Guides pratiques', 'cs-CZ': 'Praktické návody', 'ko-KR': '방법 안내' },
           collapsed: true,
           autogenerate: { directory: 'how-to' },
         },
         {
           label: 'Explanation',
-          translations: { 'vi-VN': 'Giải thích', 'zh-CN': '概念说明', 'fr-FR': 'Explications', 'cs-CZ': 'Vysvětlení' },
+          translations: { 'vi-VN': 'Giải thích', 'zh-CN': '概念说明', 'fr-FR': 'Explications', 'cs-CZ': 'Vysvětlení', 'ko-KR': '개념 설명' },
           collapsed: true,
           autogenerate: { directory: 'explanation' },
         },
         {
           label: 'Reference',
-          translations: { 'vi-VN': 'Tham chiếu', 'zh-CN': '参考', 'fr-FR': 'Référence', 'cs-CZ': 'Reference' },
+          translations: { 'vi-VN': 'Tham chiếu', 'zh-CN': '参考', 'fr-FR': 'Référence', 'cs-CZ': 'Reference', 'ko-KR': '참고자료' },
           collapsed: true,
           autogenerate: { directory: 'reference' },
         },
