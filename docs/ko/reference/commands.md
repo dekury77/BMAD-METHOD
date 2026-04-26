@@ -92,7 +92,7 @@ IDE에서 스킬 이름을 입력하면 호출됩니다. 일부 플랫폼은 스
 | 예시 스킬 | 목적 |
 | --- | --- |
 | `bmad-product-brief` | 제품 브리프 작성 — 개념이 명확할 때 가이드형 탐색 진행 |
-| `bmad-prfaq` | 제품 개념을 검증하는 [워킹 백워즈 PRFAQ](../explanation/analysis-phase.md#prfaq-working-backwards) 챌린지 |
+| `bmad-prfaq` | 제품 개념을 검증하는 [워킹 백워즈 PRFAQ](../explanation/analysis-phase.md) 챌린지 |
 | `bmad-create-prd` | 제품 요구사항 문서(PRD) 작성 |
 | `bmad-create-architecture` | 시스템 아키텍처 설계 |
 | `bmad-create-epics-and-stories` | 에픽 및 스토리 생성 |
