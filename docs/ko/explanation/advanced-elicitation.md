@@ -1,49 +1,49 @@
 ---
-title: "Advanced Elicitation"
-description: Push the LLM to rethink its work using structured reasoning methods
+title: "고급 요구사항 끌어내기"
+description: 구조화된 추론 방법을 활용하여 LLM이 자신의 결과물을 재검토하게 만드는 기법
 sidebar:
   order: 6
 ---
 
-Make the LLM reconsider what it just generated. You pick a reasoning method, it applies that method to its own output, you decide whether to keep the improvements.
+LLM이 방금 생성한 결과물을 다시 생각하게 만드는 기법입니다. 추론 방법을 직접 선택하면 AI가 그 방법을 자신의 결과물에 적용하고, 개선 사항을 수용할지 여부는 직접 결정합니다.
 
-## What is Advanced Elicitation?
+## 고급 요구사항 끌어내기란?
 
-A structured second pass. Instead of asking the AI to "try again" or "make it better," you select a specific reasoning method and the AI re-examines its own output through that lens.
+구조화된 2차 검토 과정입니다. AI에게 막연히 "다시 해봐" 또는 "더 좋게 만들어 줘"라고 요청하는 대신, 특정 추론 방법을 선택하면 AI가 그 관점으로 자신의 결과물을 재검토합니다.
 
-The difference matters. Vague requests produce vague revisions. A named method forces a particular angle of attack, surfacing insights that a generic retry would miss.
+이 차이가 중요합니다. 막연한 요청은 막연한 수정을 낳습니다. 명확히 이름 붙여진 방법은 특정 공략 각도를 강제하여, 단순 재시도로는 놓칠 수 있는 인사이트를 드러냅니다.
 
-## When to Use It
+## 언제 사용하나요?
 
-- After a workflow generates content and you want alternatives
-- When output seems okay but you suspect there's more depth
-- To stress-test assumptions or find weaknesses
-- For high-stakes content where rethinking helps
+- 워크플로우가 콘텐츠를 생성한 후 대안을 원할 때
+- 결과물이 괜찮아 보이지만 더 깊이가 있을 것 같을 때
+- 가정을 검증하거나 약점을 찾고 싶을 때
+- 재검토가 도움이 되는 중요한 콘텐츠를 다룰 때
 
-Workflows offer advanced elicitation at decision points - after the LLM has generated something, you'll be asked if you want to run it.
+워크플로우는 의사결정 시점에 고급 요구사항 끌어내기를 제안합니다. LLM이 무언가를 생성한 후 실행할지 여부를 선택할 수 있습니다.
 
-## How It Works
+## 동작 방식
 
-1. LLM suggests 5 relevant methods for your content
-2. You pick one (or reshuffle for different options)
-3. Method is applied, improvements shown
-4. Accept or discard, repeat or continue
+1. LLM이 콘텐츠에 적합한 방법 5개를 추천
+2. 하나를 선택(또는 다른 옵션을 보려면 다시 섞기)
+3. 선택한 방법이 적용되어 개선 사항 표시
+4. 수용하거나 버리고, 반복하거나 계속 진행
 
-## Built-in Methods
+## 내장 방법들
 
-Dozens of reasoning methods are available. A few examples:
+수십 가지 추론 방법이 제공됩니다. 몇 가지 예시:
 
-- **Pre-mortem Analysis** - Assume the project already failed, work backward to find why
-- **First Principles Thinking** - Strip away assumptions, rebuild from ground truth
-- **Inversion** - Ask how to guarantee failure, then avoid those things
-- **Red Team vs Blue Team** - Attack your own work, then defend it
-- **Socratic Questioning** - Challenge every claim with "why?" and "how do you know?"
-- **Constraint Removal** - Drop all constraints, see what changes, add them back selectively
-- **Stakeholder Mapping** - Re-evaluate from each stakeholder's perspective
-- **Analogical Reasoning** - Find parallels in other domains and apply their lessons
+- **사전 부검 분석(Pre-mortem Analysis)** - 프로젝트가 이미 실패했다고 가정하고 원인을 역추적
+- **제1원리 사고(First Principles Thinking)** - 가정을 모두 걷어내고 근본 진실부터 재구성
+- **역발상(Inversion)** - 실패를 확실히 만드는 방법을 찾고, 그것을 피하는 방향으로 접근
+- **레드팀 대 블루팀(Red Team vs Blue Team)** - 자신의 결과물을 공격한 뒤 방어
+- **소크라테스식 질문(Socratic Questioning)** - "왜?"와 "어떻게 아는가?"로 모든 주장을 검증
+- **제약 제거(Constraint Removal)** - 모든 제약을 없애고 무엇이 달라지는지 확인한 뒤 선택적으로 복원
+- **이해관계자 매핑(Stakeholder Mapping)** - 각 이해관계자의 관점에서 재평가
+- **유추적 추론(Analogical Reasoning)** - 다른 분야의 유사 사례를 찾아 교훈을 적용
 
-And many more. The AI picks the most relevant options for your content - you choose which to run.
+이외에도 다양합니다. AI가 콘텐츠에 가장 적합한 옵션을 추천하며, 어떤 것을 실행할지는 직접 선택합니다.
 
-:::tip[Start Here]
-Pre-mortem Analysis is a good first pick for any spec or plan. It consistently finds gaps that a standard review misses.
+:::tip[여기서 시작하세요]
+사전 부검 분석은 어떤 명세서나 계획에든 첫 번째로 시도하기 좋은 방법입니다. 일반적인 리뷰에서는 놓치는 공백을 꾸준히 찾아냅니다.
 :::

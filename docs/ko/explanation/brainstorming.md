@@ -1,33 +1,33 @@
 ---
-title: "Brainstorming"
-description: Interactive creative sessions using 60+ proven ideation techniques
+title: "브레인스토밍"
+description: 60가지 이상의 검증된 아이데이션 기법을 활용한 인터랙티브 창의 세션
 sidebar:
   order: 2
 ---
 
-Unlock your creativity through guided exploration.
+안내된 탐색을 통해 창의성을 발휘하세요.
 
-## What is Brainstorming?
+## 브레인스토밍이란?
 
-Run `bmad-brainstorming` and you've got a creative facilitator pulling ideas out of you - not generating them for you. The AI acts as coach and guide, using proven techniques to create conditions where your best thinking emerges.
+`bmad-brainstorming`을 실행하면 아이디어를 대신 생성하는 것이 아니라, 직접 아이디어를 끌어내 주는 창의 진행자를 만납니다. AI가 코치이자 안내자 역할을 하며, 검증된 기법을 사용해 최선의 사고가 나올 수 있는 환경을 만들어줍니다.
 
-**Good for:**
+**적합한 경우:**
 
-- Breaking through creative blocks
-- Generating product or feature ideas
-- Exploring problems from new angles
-- Developing raw concepts into action plans
+- 창의적 막힘을 돌파할 때
+- 제품 또는 기능 아이디어를 생성할 때
+- 새로운 각도에서 문제를 탐색할 때
+- 거친 개념을 실행 계획으로 발전시킬 때
 
-## How It Works
+## 동작 방식
 
-1. **Setup** - Define topic, goals, constraints
-2. **Choose approach** - Pick techniques yourself, get AI recommendations, go random, or follow a progressive flow
-3. **Facilitation** - Work through techniques with probing questions and collaborative coaching
-4. **Organize** - Ideas grouped into themes and prioritized
-5. **Action** - Top ideas get next steps and success metrics
+1. **설정** - 주제, 목표, 제약 조건 정의
+2. **방식 선택** - 직접 기법을 고르거나, AI 추천을 받거나, 무작위로 선택하거나, 점진적 흐름에 따라 진행
+3. **진행** - 탐색적 질문과 협업 코칭을 통해 기법 실행
+4. **정리** - 아이디어를 테마별로 그룹화하고 우선순위 결정
+5. **실행** - 상위 아이디어에 다음 단계와 성공 지표 부여
 
-Everything gets captured in a session document you can reference later or share with stakeholders.
+모든 내용은 나중에 참고하거나 이해관계자와 공유할 수 있는 세션 문서로 기록됩니다.
 
-:::note[Your Ideas]
-Every idea comes from you. The workflow creates conditions for insight - you're the source.
+:::note[여러분의 아이디어]
+모든 아이디어는 직접 나옵니다. 워크플로우는 인사이트가 나올 수 있는 환경을 만들 뿐이며, 아이디어의 원천은 바로 여러분입니다.
 :::

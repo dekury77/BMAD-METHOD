@@ -1,94 +1,94 @@
 ---
-title: "Named Agents"
-description: Why BMad agents have names, personas, and customization surfaces — and what that unlocks compared to menu-driven or prompt-driven alternatives
+title: "이름 있는 에이전트"
+description: BMad 에이전트에 이름, 페르소나, 커스터마이징 기능이 있는 이유와, 메뉴 기반 또는 프롬프트 기반 대안 대비 무엇을 가능하게 하는지 설명
 sidebar:
   order: 1
 ---
 
-You say "Hey Mary, let's brainstorm," and Mary activates. She greets you by name, in the language you configured, with her distinctive persona. She reminds you that `bmad-help` is always available. Then she skips the menu entirely and drops straight into brainstorming — because your intent was clear.
+"Hey Mary, 브레인스토밍 해보자"라고 하면 Mary가 활성화됩니다. 설정한 언어로, 그녀만의 독특한 페르소나로, 이름을 불러 인사합니다. `bmad-help`가 언제든 사용 가능하다고 알려줍니다. 그리고 메뉴를 완전히 건너뛰고 바로 브레인스토밍에 들어갑니다. 의도가 명확했기 때문입니다.
 
-This page explains what's actually happening and why BMad is designed this way.
+이 페이지는 실제로 무슨 일이 벌어지는지, 그리고 BMad가 왜 이렇게 설계되었는지 설명합니다.
 
-## The Three-Legged Stool
+## 세 개의 다리로 된 의자
 
-BMad's agent model rests on three primitives that compose:
+BMad의 에이전트 모델은 함께 조합되는 세 가지 기본 요소를 바탕으로 합니다.
 
-| Primitive | What it provides | Where it lives |
+| 기본 요소 | 제공하는 것 | 위치 |
 |---|---|---|
-| **Skill** | Capability — a discrete thing the assistant can do (brainstorm, draft a PRD, implement a story) | `.claude/skills/{skill-name}/SKILL.md` (or your IDE's equivalent) |
-| **Named agent** | Persona continuity — a recognizable identity that wraps a menu of related skills with consistent voice, principles, and visual cues | Skills whose directory starts with `bmad-agent-*` |
-| **Customization** | Makes it yours — overrides that reshape an agent's behavior, add MCP integrations, swap templates, layer in org conventions | `_bmad/custom/{skill-name}.toml` (committed team overrides) and `.user.toml` (personal, gitignored) |
+| **스킬** | 역량 — 어시스턴트가 할 수 있는 구체적인 작업 (브레인스토밍, PRD 초안 작성, 스토리 구현) | `.claude/skills/{skill-name}/SKILL.md` (또는 IDE 동등 경로) |
+| **이름 있는 에이전트** | 페르소나 연속성 — 일관된 목소리, 원칙, 시각적 단서로 관련 스킬 메뉴를 묶는 알아볼 수 있는 정체성 | `bmad-agent-*`으로 시작하는 디렉토리의 스킬들 |
+| **커스터마이징** | 나만의 것으로 만들기 — 에이전트 동작을 재구성하고, MCP 통합을 추가하고, 템플릿을 교체하고, 조직 관례를 더하는 오버라이드 | `_bmad/custom/{skill-name}.toml` (커밋된 팀 오버라이드)와 `.user.toml` (개인, gitignore) |
 
-Pull any leg away and the experience collapses:
+하나의 다리를 없애면 경험이 무너집니다.
 
-- Skills without agents → capability lists the user has to navigate by name or code
-- Agents without skills → personas with nothing to do
-- No customization → every user gets the same out-of-box behavior, forcing forks for any org-specific need
+- 에이전트 없는 스킬 → 사용자가 이름이나 코드로 탐색해야 하는 역량 목록
+- 스킬 없는 에이전트 → 할 일이 없는 페르소나
+- 커스터마이징 없음 → 모든 사용자가 동일한 기본 동작을 가지며, 조직 특유의 필요를 위해 포크해야 함
 
-## What Named Agents Buy You
+## 이름 있는 에이전트가 가져다주는 것
 
-BMad ships six named agents, each anchored to a phase of the BMad Method:
+BMad는 BMad Method의 각 단계에 연결된 6명의 이름 있는 에이전트를 제공합니다.
 
-| Agent | Phase | Module |
+| 에이전트 | 단계 | 모듈 |
 |---|---|---|
-| 📊 **Mary**, Business Analyst | Analysis | market research, brainstorming, product briefs, PRFAQs |
-| 📚 **Paige**, Technical Writer | Analysis | project documentation, diagrams, doc validation |
-| 📋 **John**, Product Manager | Planning | PRD creation, epic/story breakdown, implementation readiness |
-| 🎨 **Sally**, UX Designer | Planning | UX design specifications |
-| 🏗️ **Winston**, System Architect | Solutioning | technical architecture, alignment checks |
-| 💻 **Amelia**, Senior Engineer | Implementation | story execution, quick-dev, code review, sprint planning |
+| 📊 **Mary**, 비즈니스 분석가 | 분석 | 시장 리서치, 브레인스토밍, 제품 브리프, PRFAQ |
+| 📚 **Paige**, 테크니컬 라이터 | 분석 | 프로젝트 문서화, 다이어그램, 문서 검증 |
+| 📋 **John**, 프로덕트 매니저 | 계획 | PRD 작성, 에픽/스토리 분해, 구현 준비도 |
+| 🎨 **Sally**, UX 디자이너 | 계획 | UX 디자인 명세 |
+| 🏗️ **Winston**, 시스템 아키텍트 | 해결책 설계 | 기술 아키텍처, 정합성 검사 |
+| 💻 **Amelia**, 시니어 엔지니어 | 구현 | 스토리 실행, quick-dev, 코드 리뷰, 스프린트 플래닝 |
 
-They each have a hardcoded identity (name, title, domain) and a customizable layer (role, principles, communication style, icon, menu). You can rewrite Mary's principles or add menu items; you can't rename her — that's deliberate. Brand recognition survives customization so "hey Mary" always activates the analyst, regardless of how a team has shaped her behavior.
+각 에이전트는 고정된 정체성(이름, 직함, 도메인)과 커스터마이징 가능한 레이어(역할, 원칙, 커뮤니케이션 스타일, 아이콘, 메뉴)를 가집니다. Mary의 원칙을 재작성하거나 메뉴 항목을 추가할 수 있지만, 이름을 바꿀 수는 없습니다. 이는 의도적입니다. 브랜드 인식이 커스터마이징을 거쳐도 살아남아 팀이 그녀의 동작을 어떻게 바꾸든 "hey Mary"는 항상 분석가를 활성화합니다.
 
-## The Activation Flow
+## 활성화 흐름
 
-When you invoke a named agent, eight steps run in order:
+이름 있는 에이전트를 호출하면 순서대로 8단계가 실행됩니다.
 
-1. **Resolve the agent block** — merge the shipped `customize.toml` with team and personal overrides, via a Python resolver using stdlib `tomllib`
-2. **Execute prepend steps** — any pre-flight behavior the team configured
-3. **Adopt persona** — hardcoded identity plus customized role, communication style, principles
-4. **Load persistent facts** — org rules, compliance notes, optionally files loaded via a `file:` prefix (e.g., `file:{project-root}/docs/project-context.md`)
-5. **Load config** — user name, communication language, output language, artifact paths
-6. **Greet** — personalized, in the configured language, with the agent's emoji prefix so you can see at a glance who's speaking
-7. **Execute append steps** — any post-greet setup the team configured
-8. **Dispatch or present the menu** — if your opening message maps to a menu item, go directly; otherwise render the menu and wait for input
+1. **에이전트 블록 해석** — 기본 제공 `customize.toml`을 팀 및 개인 오버라이드와 병합. stdlib `tomllib`을 사용하는 Python 리졸버를 통해 처리
+2. **prepend 단계 실행** — 팀이 설정한 사전 비행 동작 실행
+3. **페르소나 채택** — 고정된 정체성에 커스터마이징된 역할, 커뮤니케이션 스타일, 원칙 추가
+4. **영구 사실 로드** — 조직 규칙, 규정 준수 노트, `file:` 접두사로 로드된 파일(예: `file:{project-root}/docs/project-context.md`)
+5. **설정 로드** — 사용자 이름, 커뮤니케이션 언어, 출력 언어, 아티팩트 경로
+6. **인사** — 설정된 언어로, 한눈에 누가 말하는지 알 수 있는 에이전트의 이모지 접두사와 함께 개인화된 인사
+7. **append 단계 실행** — 팀이 설정한 인사 후 설정 실행
+8. **메뉴 발송 또는 표시** — 여는 메시지가 메뉴 항목과 일치하면 바로 이동; 아니면 메뉴를 렌더링하고 입력 대기
 
-Step 8 is where intent meets capability. "Hey Mary, let's brainstorm" skips rendering because `bmad-brainstorming` is an obvious match for `BP` on Mary's menu. If you say something ambiguous, she asks once, briefly, not as a confirmation ritual. If nothing fits, she continues the conversation normally.
+8단계에서 의도가 역량을 만납니다. "Hey Mary, 브레인스토밍 해보자"는 `bmad-brainstorming`이 Mary 메뉴의 `BP`에 분명히 대응하기 때문에 렌더링을 건너뜁니다. 모호한 말을 하면 한 번, 간략하게, 확인 의례가 아니라 묻습니다. 맞는 것이 없으면 보통 대화를 이어갑니다.
 
-## Why Not Just a Menu?
+## 왜 메뉴만이 아닌가?
 
-Menus force the user to meet the tool halfway. You have to remember that brainstorming lives under code `BP` on the analyst agent, not the PM agent, and know which persona owns which capabilities. That's cognitive overhead the tool is making you carry.
+메뉴는 사용자가 도구에 반쯤 맞춰가도록 강제합니다. 브레인스토밍이 분석가 에이전트의 코드 `BP`에 있지 PM 에이전트에 있지 않다는 것을 기억해야 하고, 어떤 페르소나가 어떤 역량을 소유하는지 알아야 합니다. 이것은 도구가 사용자에게 지우는 인지적 부담입니다.
 
-Named agents invert it. You say what you want, to whom, in whatever words feel natural. The agent knows who they are and what they do. When your intent is clear enough, they just go.
+이름 있는 에이전트는 이것을 뒤집습니다. 자연스럽게 느껴지는 어떤 말로든, 누구에게든, 원하는 것을 말합니다. 에이전트는 자신이 누구이고 무엇을 하는지 압니다. 의도가 충분히 명확하면 그냥 합니다.
 
-The menu is still there as a fallback — show it when you're exploring, skip it when you're not.
+메뉴는 탐색할 때 대안으로 여전히 있습니다. 탐색하지 않을 때는 건너뜁니다.
 
-## Why Not Just a Blank Prompt?
+## 왜 빈 프롬프트만이 아닌가?
 
-Blank prompts assume you know the magic words. "Help me brainstorm" might work, but "let's ideate on my SaaS idea" might not, and the results depend on how you phrased the ask. You become responsible for prompt engineering.
+빈 프롬프트는 마법의 단어를 알고 있다고 가정합니다. "브레인스토밍 도와줘"는 작동할 수도 있지만 "내 SaaS 아이디어를 아이데이션해보자"는 작동하지 않을 수도 있고, 결과는 어떻게 요청을 표현했는지에 달려 있습니다. 프롬프트 엔지니어링의 책임이 사용자에게 넘어갑니다.
 
-Named agents add structure without closing off freedom. The persona stays consistent, the capabilities are discoverable, and `bmad-help` is always one command away. You don't have to guess what the agent can do, and you don't need a manual to use it either.
+이름 있는 에이전트는 자유를 닫지 않으면서 구조를 추가합니다. 페르소나는 일관되고, 역량은 발견 가능하며, `bmad-help`는 항상 명령 한 번이면 됩니다. 에이전트가 무엇을 할 수 있는지 추측할 필요도, 사용 설명서도 필요 없습니다.
 
-## Customization as a First-Class Citizen
+## 커스터마이징을 기본 기능으로
 
-The customization model is what lets this scale beyond a single developer.
+커스터마이징 모델이 이것을 단일 개발자를 넘어 확장할 수 있게 합니다.
 
-Every agent ships a `customize.toml` with sensible defaults. Teams commit overrides to `_bmad/custom/bmad-agent-{role}.toml`. Individuals can layer personal preferences in `.user.toml` (gitignored). The resolver merges all three at activation time with predictable structural rules.
+모든 에이전트는 합리적인 기본값이 있는 `customize.toml`을 제공합니다. 팀은 오버라이드를 `_bmad/custom/bmad-agent-{role}.toml`에 커밋합니다. 개인은 `.user.toml`(gitignore)에 개인 선호도를 레이어로 추가할 수 있습니다. 리졸버는 활성화 시 예측 가능한 구조적 규칙으로 세 가지를 모두 병합합니다.
 
-Most users never hand-author these files. The `bmad-customize` skill walks through picking the target, choosing agent vs workflow scope, authoring the override, and verifying the merge — so the customization surface stays accessible to anyone who understands their intent, not just those fluent in TOML.
+대부분의 사용자는 이 파일들을 직접 작성하지 않습니다. `bmad-customize` 스킬이 대상 선택, 에이전트 대 워크플로우 범위 선택, 오버라이드 작성, 병합 검증 과정을 안내합니다. 커스터마이징 기능이 TOML에 능숙한 사람뿐만 아니라 의도를 이해하는 누구에게든 접근 가능하게 유지됩니다.
 
-Concrete example: a team commits a single file telling Amelia to always use the Context7 MCP tool for library docs and to fall back to Linear when a story isn't in the local epics list. Every dev workflow Amelia dispatches (dev-story, quick-dev, create-story, code-review) inherits that behavior, with no source edits or per-workflow duplication required.
+구체적인 예시: 팀이 Amelia에게 라이브러리 문서에는 항상 Context7 MCP 도구를 사용하고, 스토리가 로컬 에픽 목록에 없을 때는 Linear로 대체하도록 지시하는 단일 파일을 커밋합니다. Amelia가 발송하는 모든 개발자 워크플로우(dev-story, quick-dev, create-story, code-review)가 소스 편집이나 워크플로우별 중복 없이 그 동작을 상속합니다.
 
-There's also a second customization surface for *cross-cutting* concerns: the central `_bmad/config.toml` and `_bmad/config.user.toml` (both installer-owned, rebuilt from each module's `module.yaml`) plus `_bmad/custom/config.toml` (team, committed) and `_bmad/custom/config.user.toml` (personal, gitignored) for overrides. This is where the **agent roster** lives — the lightweight descriptors that roster consumers like `bmad-party-mode`, `bmad-retrospective`, and `bmad-advanced-elicitation` read to know who's available and how to embody them. Rebrand an agent org-wide with a team override; add fictional voices (Kirk, Spock, a domain expert persona) as personal experiments via the `.user.toml` override — without touching any skill folder. The per-skill file shapes how Mary *behaves* when she activates; the central config shapes how other skills *see* her when they look at the field.
+*교차 관심사*를 위한 두 번째 커스터마이징 기능도 있습니다. 중앙 `_bmad/config.toml`과 `_bmad/config.user.toml`(둘 다 설치 도구 소유, 각 모듈의 `module.yaml`에서 재구성)에 오버라이드를 위한 `_bmad/custom/config.toml`(팀, 커밋)과 `_bmad/custom/config.user.toml`(개인, gitignore)이 추가됩니다. 여기에 **에이전트 로스터**가 있습니다. `bmad-party-mode`, `bmad-retrospective`, `bmad-advanced-elicitation` 같은 로스터 소비자들이 누가 사용 가능한지, 어떻게 구현할지 알기 위해 읽는 경량 디스크립터입니다. 팀 오버라이드로 에이전트를 조직 전체에 재브랜딩하거나, `.user.toml` 오버라이드를 통해 가상의 목소리(Kirk, Spock, 도메인 전문가 페르소나)를 개인 실험으로 추가할 수 있습니다. 스킬 폴더는 건드리지 않고도 됩니다. 스킬별 파일은 Mary가 활성화될 때 어떻게 *행동하는지*를 형성하고, 중앙 설정은 다른 스킬들이 해당 필드를 볼 때 그녀를 어떻게 *보는지*를 형성합니다.
 
-For the full customization surface and worked examples, see:
+전체 커스터마이징 기능과 작업 예시는 다음을 참고하세요.
 
-- [How to Customize BMad](../how-to/customize-bmad.md) — the reference for what's customizable and how merge works
-- [How to Expand BMad for Your Organization](../how-to/expand-bmad-for-your-org.md) — five worked recipes spanning agent-wide rules, workflow conventions, external publishing, template swaps, and agent roster customization
-- `bmad-customize` skill — the guided authoring helper that turns intent into a correctly-placed, verified override file
+- [BMad 커스터마이징 방법](../how-to/customize-bmad.md) — 커스터마이징 가능한 것과 병합 동작 방식 참고자료
+- [조직을 위한 BMad 확장 방법](../how-to/expand-bmad-for-your-org.md) — 에이전트 전체 규칙, 워크플로우 관례, 외부 게시, 템플릿 교체, 에이전트 로스터 커스터마이징을 다루는 5가지 작업 레시피
+- `bmad-customize` 스킬 — 의도를 올바른 위치에 검증된 오버라이드 파일로 변환하는 안내형 작성 도우미
 
-## The Bigger Idea
+## 큰 그림
 
-Most AI assistants today are either menus or prompts, and both shift cognitive load onto the user. Named agents plus customizable skills let you talk to a teammate who already knows the work, and let your organization shape that teammate without forking.
+오늘날 대부분의 AI 어시스턴트는 메뉴이거나 프롬프트이며, 둘 다 인지 부담을 사용자에게 전가합니다. 이름 있는 에이전트와 커스터마이징 가능한 스킬은 이미 업무를 알고 있는 팀원과 대화하게 해주며, 조직이 포킹 없이도 그 팀원을 형성할 수 있게 합니다.
 
-The next time you type "Hey Mary, let's brainstorm" and she just gets on with it, notice what didn't happen. There was no slash command, no menu to navigate, no awkward reminder of what she can do. That absence is the design.
+다음번에 "Hey Mary, 브레인스토밍 해보자"라고 입력하고 그녀가 바로 시작할 때, 무슨 일이 일어나지 않았는지 주목해보세요. 슬래시 명령도, 탐색할 메뉴도, 무엇을 할 수 있는지 어색하게 상기시켜주는 것도 없었습니다. 그 부재가 바로 설계입니다.

@@ -1,70 +1,70 @@
 ---
-title: "Analysis Phase: From Idea to Foundation"
-description: What brainstorming, research, product briefs, and PRFAQs are — and when to use each
+title: "분석 단계: 아이디어에서 토대로"
+description: 브레인스토밍, 리서치, 제품 브리프, PRFAQ가 무엇인지, 각각 언제 사용하는지 안내
 sidebar:
   order: 1
 ---
 
-The Analysis phase (Phase 1) helps you think clearly about your product before committing to building it. Every tool in this phase is optional, but skipping analysis entirely means your PRD is built on assumptions instead of insight.
+분석 단계(1단계)는 제품을 실제로 만들기로 결정하기 전에 명확하게 사고할 수 있도록 도와줍니다. 이 단계의 모든 도구는 선택 사항이지만, 분석을 완전히 건너뛰면 PRD가 인사이트 대신 가정 위에 만들어집니다.
 
-## Why Analysis Before Planning?
+## 왜 계획 전에 분석이 필요한가?
 
-A PRD answers "what should we build and why?" If you feed it vague thinking, you get a vague PRD — and every downstream document inherits that vagueness. Architecture built on a weak PRD makes wrong technical bets. Stories derived from weak architecture miss edge cases. The cost compounds.
+PRD는 "무엇을 만들어야 하고 왜 만들어야 하는가?"에 답합니다. 막연한 생각을 입력하면 막연한 PRD가 나오며, 모든 후속 문서가 그 막연함을 이어받습니다. 약한 PRD를 기반으로 설계된 아키텍처는 잘못된 기술적 결정을 내립니다. 약한 아키텍처에서 도출된 스토리는 엣지 케이스를 놓칩니다. 비용은 복리로 늘어납니다.
 
-Analysis tools exist to make your PRD sharp. They attack the problem from different angles — creative exploration, market reality, customer clarity, feasibility — so that by the time you sit down with the PM agent, you know what you're building and for whom.
+분석 도구들은 PRD를 날카롭게 만들기 위해 존재합니다. 창의적 탐색, 시장 현실, 고객 명확성, 실현 가능성 등 다양한 각도에서 문제를 공략합니다. 프로덕트 매니저 에이전트와 작업을 시작할 때쯤이면 무엇을 누구를 위해 만드는지 명확히 알 수 있습니다.
 
-## The Tools
+## 도구들
 
-### Brainstorming
+### 브레인스토밍
 
-**What it is.** A facilitated creative session using proven ideation techniques. The AI acts as coach, pulling ideas out of you through structured exercises — not generating ideas for you.
+**무엇인가.** 검증된 아이데이션 기법을 활용한 진행형 창의 세션입니다. AI가 아이디어를 대신 생성하는 것이 아니라, 구조화된 활동을 통해 코치 역할을 하며 아이디어를 이끌어냅니다.
 
-**Why it's here.** Raw ideas need space to develop before they get locked into requirements. Brainstorming creates that space. It's especially valuable when you have a problem domain but no clear solution, or when you want to explore multiple directions before committing.
+**왜 여기에 있는가.** 거친 아이디어는 요구사항으로 고착되기 전에 발전할 공간이 필요합니다. 브레인스토밍이 그 공간을 만들어줍니다. 문제 영역은 있지만 명확한 해결책이 없을 때, 또는 여러 방향을 탐색한 뒤 하나를 선택하고 싶을 때 특히 유용합니다.
 
-**When to use it.** You have a vague sense of what you want to build but haven't crystallized the concept. Or you have a concept but want to pressure-test it against alternatives.
+**언제 사용하는가.** 만들고 싶은 것이 막연하게 떠오르지만 개념이 구체화되지 않았을 때. 또는 개념은 있지만 대안과 비교해 검증하고 싶을 때.
 
-See [Brainstorming](./brainstorming.md) for a deeper look at how sessions work.
+세션 진행 방식에 대한 자세한 내용은 [브레인스토밍](./brainstorming.md)을 참고하세요.
 
-### Research (Market, Domain, Technical)
+### 리서치 (시장, 도메인, 기술)
 
-**What it is.** Three focused research workflows that investigate different dimensions of your idea. Market research examines competitors, trends, and user sentiment. Domain research builds subject-matter expertise and terminology. Technical research evaluates feasibility, architecture options, and implementation approaches.
+**무엇인가.** 아이디어의 서로 다른 측면을 조사하는 3가지 집중 리서치 워크플로우입니다. 시장 리서치는 경쟁사, 트렌드, 사용자 감정을 분석합니다. 도메인 리서치는 해당 분야의 전문 지식과 용어를 쌓습니다. 기술 리서치는 실현 가능성, 아키텍처 옵션, 구현 방식을 평가합니다.
 
-**Why it's here.** Building on assumptions is the fastest way to build something nobody needs. Research grounds your concept in reality — what competitors already exist, what users actually struggle with, what's technically feasible, and what industry-specific constraints you'll face.
+**왜 여기에 있는가.** 가정만을 바탕으로 구축하는 것은 아무도 필요하지 않는 것을 만드는 가장 빠른 방법입니다. 리서치는 개념을 현실에 기반하게 합니다. 이미 존재하는 경쟁사, 사용자가 실제로 겪는 어려움, 기술적으로 실현 가능한 것, 업계 특유의 제약 조건 등을 파악합니다.
 
-**When to use it.** You're entering an unfamiliar domain, you suspect competitors exist but haven't mapped them, or your concept depends on technical capabilities you haven't validated. Run one, two, or all three — each stands alone.
+**언제 사용하는가.** 익숙하지 않은 도메인에 진입할 때, 경쟁사가 있을 것 같지만 파악하지 못했을 때, 또는 개념이 아직 검증되지 않은 기술 역량에 의존할 때. 하나, 둘, 또는 세 가지 모두 실행할 수 있으며 각각 독립적으로 동작합니다.
 
-### Product Brief
+### 제품 브리프
 
-**What it is.** A guided discovery session that produces a 1-2 page executive summary of your product concept. The AI acts as a collaborative Business Analyst, helping you articulate the vision, target audience, value proposition, and scope.
+**무엇인가.** 제품 개념의 1~2페이지 요약본을 만드는 안내형 발견 세션입니다. AI가 협업 비즈니스 분석가 역할을 하며 비전, 목표 고객, 가치 제안, 범위를 명확히 표현하도록 돕습니다.
 
-**Why it's here.** The product brief is the gentler path into planning. It captures your strategic vision in a structured format that feeds directly into PRD creation. It works best when you already have conviction about your concept — you know the customer, the problem, and roughly what you want to build. The brief organizes and sharpens that thinking.
+**왜 여기에 있는가.** 제품 브리프는 계획으로 이어지는 더 부드러운 경로입니다. 전략적 비전을 PRD 작성에 직접 활용할 수 있는 구조화된 형식으로 정리합니다. 개념에 대한 확신이 이미 있을 때 가장 잘 동작합니다. 고객, 문제, 대략적으로 만들고 싶은 것을 알고 있을 때, 브리프가 그 사고를 정리하고 날카롭게 만들어줍니다.
 
-**When to use it.** Your concept is relatively clear and you want to document it efficiently before creating a PRD. You're confident in the direction and don't need your assumptions aggressively challenged.
+**언제 사용하는가.** 개념이 비교적 명확하고 PRD를 만들기 전에 효율적으로 문서화하고 싶을 때. 방향에 확신이 있어 가정을 강하게 도전받을 필요가 없을 때.
 
-### PRFAQ (Working Backwards)
+### PRFAQ (역방향 작업)
 
-**What it is.** Amazon's Working Backwards methodology adapted as an interactive challenge. You write the press release announcing your finished product before a single line of code exists, then answer the hardest questions customers and stakeholders would ask. The AI acts as a relentless but constructive product coach.
+**무엇인가.** 코드 한 줄도 작성하기 전에 완성된 제품을 발표하는 보도자료를 먼저 작성하고, 고객과 이해관계자가 던질 가장 어려운 질문에 답하는 방식으로 진행되는 인터랙티브한 도전입니다. Amazon의 역방향 작업(Working Backwards) 방법론을 적용한 것으로, AI가 엄격하지만 건설적인 프로덕트 코치 역할을 합니다.
 
-**Why it's here.** The PRFAQ is the rigorous path into planning. It forces customer-first clarity by making you defend every claim. If you can't write a compelling press release, the product isn't ready. If customer FAQ answers reveal gaps, those are gaps you'd discover much later — and more expensively — during implementation. The gauntlet surfaces weak thinking early, when it's cheapest to fix.
+**왜 여기에 있는가.** PRFAQ는 계획으로 이어지는 엄격한 경로입니다. 모든 주장을 방어하도록 만들어 고객 중심의 명확성을 강제합니다. 설득력 있는 보도자료를 쓸 수 없다면 제품이 아직 준비되지 않은 것입니다. 고객 FAQ 답변에서 공백이 드러난다면, 이는 구현 단계에서 훨씬 나중에, 훨씬 비싼 비용을 치르고 발견할 공백입니다. 이 과정이 약한 사고를 초기에, 수정 비용이 가장 낮을 때 드러냅니다.
 
-**When to use it.** You want your concept stress-tested before committing resources. You're unsure whether users will actually care. You want to validate that you can articulate a clear, defensible value proposition. Or you simply want the discipline of Working Backwards to sharpen your thinking.
+**언제 사용하는가.** 리소스를 투입하기 전에 개념을 검증하고 싶을 때. 사용자가 실제로 관심을 가질지 확신이 없을 때. 명확하고 방어 가능한 가치 제안을 표현할 수 있는지 검증하고 싶을 때. 또는 역방향 작업의 규율을 통해 사고를 날카롭게 만들고 싶을 때.
 
-## Which Should I Use?
+## 어떤 것을 사용해야 하나요?
 
-| Situation | Recommended tool |
+| 상황 | 권장 도구 |
 | --------- | ---------------- |
-| "I have a vague idea, not sure where to start" | Brainstorming |
-| "I need to understand the market before deciding" | Research |
-| "I know what I want to build, just need to document it" | Product Brief |
-| "I want to make sure this idea is actually worth building" | PRFAQ |
-| "I want to explore, then validate, then document" | Brainstorming → Research → PRFAQ or Brief |
+| "막연한 아이디어가 있는데 어디서 시작해야 할지 모르겠다" | 브레인스토밍 |
+| "결정하기 전에 시장을 이해해야 한다" | 리서치 |
+| "만들 것을 알고 있고, 그냥 문서화가 필요하다" | 제품 브리프 |
+| "이 아이디어가 실제로 만들 가치가 있는지 확인하고 싶다" | PRFAQ |
+| "탐색하고, 검증하고, 문서화하고 싶다" | 브레인스토밍 → 리서치 → PRFAQ 또는 브리프 |
 
-Product Brief and PRFAQ both produce input for the PRD — choose one based on how much challenge you want. The brief is collaborative discovery. The PRFAQ is a gauntlet. Both get you to the same destination; the PRFAQ tests whether your concept deserves to get there.
+제품 브리프와 PRFAQ는 모두 PRD의 입력값을 만들어냅니다. 얼마나 많은 도전을 원하는지에 따라 하나를 선택하세요. 브리프는 협업적 발견 과정이고, PRFAQ는 엄격한 관문입니다. 둘 다 같은 목적지로 이어지지만, PRFAQ는 개념이 그 목적지에 도달할 자격이 있는지 테스트합니다.
 
-:::tip[Not Sure?]
-Run `bmad-help` and describe your situation. It will recommend the right starting point based on what you've already done and what you're trying to accomplish.
+:::tip[확신이 없다면?]
+`bmad-help`를 실행하고 상황을 설명하세요. 지금까지 한 작업과 달성하려는 목표를 바탕으로 적절한 시작점을 추천해 줍니다.
 :::
 
-## What Happens After Analysis?
+## 분석 후에는?
 
-Analysis outputs feed directly into Phase 2 (Planning). The PRD workflow accepts product briefs, PRFAQ documents, research findings, and brainstorming reports as input — it synthesizes whatever you've produced into structured requirements. The more analysis you do, the sharper your PRD.
+분석 결과물은 2단계(계획)에 직접 입력됩니다. PRD 워크플로우는 제품 브리프, PRFAQ 문서, 리서치 결과, 브레인스토밍 보고서를 입력으로 받아 이를 구조화된 요구사항으로 통합합니다. 분석을 많이 할수록 PRD가 더 날카로워집니다.

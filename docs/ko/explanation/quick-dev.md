@@ -1,73 +1,73 @@
 ---
-title: "Quick Dev"
-description: Reduce human-in-the-loop friction without giving up the checkpoints that protect output quality
+title: "퀵 데브"
+description: 출력 품질을 보호하는 체크포인트는 유지하면서 사람 개입에 따른 마찰을 줄입니다
 sidebar:
   order: 2
 ---
 
-Intent in, code changes out, with as few human-in-the-loop turns as possible — without sacrificing quality.
+의도를 입력하면 코드 변경이 출력됩니다. 사람이 개입하는 횟수는 최대한 줄이되 품질은 포기하지 않습니다.
 
-It lets the model run longer between checkpoints, then brings the human back only when the task cannot safely continue without human judgment or when it is time to review the end result.
+모델이 체크포인트 사이에서 더 오래 자율적으로 실행되도록 하고, 사람은 작업을 안전하게 이어가기 위해 판단이 필요한 순간이나 최종 결과를 검토할 때만 다시 개입합니다.
 
-![Quick Dev workflow diagram](/diagrams/quick-dev-diagram.png)
+![퀵 데브 워크플로우 다이어그램](/diagrams/quick-dev-diagram.png)
 
-## Why This Exists
+## 왜 필요한가
 
-Human-in-the-loop turns are necessary and expensive.
+사람이 직접 개입하는 단계는 필수적이지만 비용이 큽니다.
 
-Current LLMs still fail in predictable ways: they misread intent, fill gaps with confident guesses, drift into unrelated work, and generate noisy review output. At the same time, constant human intervention limits development velocity. Human attention is the bottleneck.
+현재 LLM은 예측 가능한 방식으로 실패합니다. 의도를 잘못 읽고, 빈 곳을 자신감 있는 추측으로 채우며, 무관한 작업으로 흘러가고, 노이즈가 많은 검토 결과를 생성합니다. 그렇다고 끊임없이 사람이 개입하면 개발 속도가 떨어집니다. 사람의 주의력이 병목입니다.
 
-`bmad-quick-dev` rebalances that tradeoff. It trusts the model to run unsupervised for longer stretches, but only after the workflow has created a strong enough boundary to make that safe.
+`bmad-quick-dev`는 이 트레이드오프를 재조정합니다. 워크플로우가 충분히 강한 경계를 만든 뒤에만 모델을 더 오래 비지도(unsupervised) 상태로 실행하도록 신뢰합니다.
 
-## The Core Design
+## 핵심 설계
 
-### 1. Compress intent first
+### 1. 먼저 의도를 압축한다
 
-The workflow starts by having the human and the model compress the request into one coherent goal. The input can begin as a rough expression of intent, but before the workflow runs autonomously it has to become small enough, clear enough, and contradiction-free enough to execute.
+워크플로우는 사람과 모델이 요청을 하나의 일관된 목표로 압축하는 것에서 시작합니다. 입력은 처음에 거친 의도 표현으로 시작해도 됩니다. 하지만 워크플로우가 자율적으로 실행되기 전에, 충분히 작고 명확하며 모순이 없는 수준으로 정제되어야 합니다.
 
-Intent can come in many forms: a couple of phrases, a bug tracker link, output from plan mode, text copied from a chat session, or even a story number from BMAD's own `epics.md`. In that last case, the workflow will not understand BMAD story-tracking semantics, but it can still take the story itself and run with it.
+의도는 다양한 형태로 올 수 있습니다. 짧은 문구 몇 개, 버그 트래커 링크, 플랜 모드 출력, 채팅 세션에서 복사한 텍스트, 혹은 BMad 자체의 `epics.md`에 있는 스토리 번호도 됩니다. 마지막 경우, 워크플로우가 BMad 스토리 추적 의미를 이해하지는 못하지만 스토리 내용을 가져와 실행할 수 있습니다.
 
-This workflow does not eliminate human control. It relocates it to a small number of high-value moments:
+이 워크플로우는 사람의 통제를 없애는 것이 아닙니다. 소수의 고가치 순간으로 집중시키는 것입니다:
 
-- **Intent clarification** - turning a messy request into one coherent goal without hidden contradictions
-- **Spec approval** - confirming that the frozen understanding is the right thing to build
-- **Review of the final product** - the primary checkpoint, where the human decides whether the result is acceptable at the end
+- **의도 명확화** — 숨겨진 모순 없이 하나의 일관된 목표로 정제
+- **스펙 승인** — 확정된 이해가 만들 것이 맞는지 확인
+- **최종 결과물 검토** — 핵심 체크포인트. 결과가 수용 가능한지 사람이 판단
 
-### 2. Route to the smallest safe path
+### 2. 가장 안전한 최소 경로로 라우팅한다
 
-Once the goal is clear, the workflow decides whether this is a true one-shot change or whether it needs the fuller path. Small, zero-blast-radius changes can go straight to implementation. Everything else goes through planning so the model has a stronger boundary before it runs longer on its own.
+목표가 명확해지면 워크플로우는 이것이 진정한 원샷 변경인지, 아니면 더 완전한 경로가 필요한지 결정합니다. 영향 범위가 작고 위험이 없는 변경은 바로 구현으로 진행합니다. 그 외에는 모델이 더 오래 자율적으로 실행되기 전에 더 강한 경계를 갖출 수 있도록 플래닝 과정을 거칩니다.
 
-### 3. Run longer with less supervision
+### 3. 더 적은 감독으로 더 오래 실행한다
 
-After that routing decision, the model can carry more of the work on its own. On the fuller path, the approved spec becomes the boundary the model executes against with less supervision, which is the whole point of the design.
+라우팅 결정이 나면 모델이 더 많은 작업을 스스로 처리할 수 있습니다. 완전한 경로에서는 승인된 스펙이 경계가 되어 모델이 적은 감독으로 실행합니다. 이것이 이 설계의 핵심입니다.
 
-### 4. Diagnose failure at the right layer
+### 4. 올바른 레이어에서 실패를 진단한다
 
-If the implementation is wrong because the intent was wrong, patching the code is the wrong fix. If the code is wrong because the spec was weak, patching the diff is also the wrong fix. The workflow is designed to diagnose where the failure entered the system, go back to that layer, and regenerate from there.
+의도가 잘못되어 구현이 틀렸다면, 코드를 패치하는 것은 잘못된 수정입니다. 스펙이 약해서 코드가 틀렸다면, diff를 패치하는 것도 잘못된 수정입니다. 워크플로우는 시스템의 어느 단계에서 실패가 발생했는지 진단하고, 그 레이어로 돌아가 재생성하도록 설계되었습니다.
 
-Review findings are used to decide whether the problem came from intent, spec generation, or local implementation. Only truly local problems get patched locally.
+검토 결과는 문제가 의도, 스펙 생성, 또는 로컬 구현 중 어디에서 비롯됐는지 판단하는 데 사용됩니다. 진정으로 로컬한 문제만 로컬에서 패치합니다.
 
-### 5. Bring the human back only when needed
+### 5. 필요할 때만 사람을 다시 개입시킨다
 
-The intent interview is human-in-the-loop, but it is not the same kind of interruption as a recurring checkpoint. The workflow tries to keep those recurring checkpoints to a minimum. After the initial shaping of intent, the human mainly comes back when the workflow cannot safely continue without judgment and at the end, when it is time to review the result.
+의도 인터뷰는 사람이 개입하는 단계이지만, 반복적인 체크포인트와는 성격이 다릅니다. 워크플로우는 반복적인 체크포인트를 최소화하려 합니다. 초기 의도 구체화 이후, 사람은 주로 워크플로우가 판단 없이 안전하게 이어갈 수 없을 때와 결과를 검토할 때 다시 등장합니다.
 
-- **Intent-gap resolution** - stepping back in when review proves the workflow could not safely infer what was meant
+- **의도 갭 해소** — 검토 결과, 워크플로우가 의도를 안전하게 추론하지 못했을 때 다시 개입
 
-Everything else is a candidate for longer autonomous execution. That tradeoff is deliberate. Older patterns spend more human attention on continuous supervision. Quick Dev spends more trust on the model, but saves human attention for the moments where human reasoning has the highest leverage.
+나머지는 모두 더 긴 자율 실행의 후보입니다. 이 트레이드오프는 의도적입니다. 기존 패턴은 지속적인 감독에 사람의 주의를 더 많이 씁니다. 퀵 데브는 모델에 더 많은 신뢰를 부여하되, 인간의 추론이 가장 높은 레버리지를 발휘하는 순간을 위해 사람의 주의를 아껴둡니다.
 
-## Why the Review System Matters
+## 검토 시스템이 중요한 이유
 
-The review phase is not just there to find bugs. It is there to route correction without destroying momentum.
+검토 단계는 단순히 버그를 찾기 위한 것이 아닙니다. 모멘텀을 잃지 않으면서 수정 방향을 라우팅하기 위한 것입니다.
 
-This workflow works best on a platform that can spawn subagents, or at least invoke another LLM through the command line and wait for a result. If your platform does not support that natively, you can add a skill to do it. Context-free subagents are a cornerstone of the review design.
+이 워크플로우는 서브에이전트를 생성하거나 최소한 커맨드라인을 통해 다른 LLM을 호출하고 결과를 기다릴 수 있는 플랫폼에서 가장 잘 작동합니다. 플랫폼이 이를 기본 지원하지 않는다면 스킬을 추가하여 구현할 수 있습니다. 컨텍스트 없는 서브에이전트는 검토 설계의 핵심 요소입니다.
 
-Agentic reviews often go wrong in two ways:
+에이전틱 검토는 두 가지 방식으로 잘못되는 경우가 많습니다:
 
-- They generate too many findings, forcing the human to sift through noise.
-- They derail the current change by surfacing unrelated issues and turning every run into an ad hoc cleanup project.
+- 너무 많은 결과를 생성하여 사람이 노이즈를 걸러내야 합니다.
+- 관련 없는 이슈를 드러내 현재 변경을 이탈시키고, 모든 실행을 즉흥적인 정리 작업으로 만들어버립니다.
 
-Quick Dev addresses both by treating review as triage.
+퀵 데브는 검토를 트리아지(triage)로 취급함으로써 두 문제를 모두 해결합니다.
 
-Some findings belong to the current change. Some do not. If a finding is incidental rather than causally tied to the current work, the workflow can defer it instead of forcing the human to handle it immediately. That keeps the run focused and prevents random tangents from consuming the budget of attention.
+일부 결과는 현재 변경에 속하고, 일부는 그렇지 않습니다. 결과가 현재 작업과 인과적으로 연결되지 않고 부수적인 것이라면, 워크플로우는 그것을 즉시 처리하도록 강제하지 않고 미룰 수 있습니다. 이렇게 하면 실행이 집중력을 유지하고, 무관한 이슈가 주의 예산을 소모하는 것을 막습니다.
 
-That triage will sometimes be imperfect. That is acceptable. It is usually better to misjudge some findings than to flood the human with thousands of low-value review comments. The system is optimizing for signal quality, not exhaustive recall.
+이 트리아지가 완벽하지 않을 수도 있습니다. 그것은 괜찮습니다. 일부 결과를 잘못 판단하는 것이 수천 개의 저가치 검토 코멘트로 사람을 압도하는 것보다 대부분의 경우 낫습니다. 시스템은 완전한 재현율이 아니라 신호 품질을 최적화합니다.

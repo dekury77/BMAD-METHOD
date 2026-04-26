@@ -1,52 +1,52 @@
 ---
-title: Skills
-description: Reference for BMad skills — what they are, how they work, and where to find them.
+title: 스킬
+description: BMad 스킬 참고자료 — 스킬의 개념, 동작 방식, 위치 안내
 sidebar:
   order: 3
 ---
 
-Skills are pre-built prompts that load agents, run workflows, or execute tasks inside your IDE. The BMad installer generates them from your installed modules at install time. If you later add, remove, or change modules, re-run the installer to keep skills in sync (see [Troubleshooting](#troubleshooting)).
+스킬은 IDE 안에서 에이전트를 불러오거나, 워크플로우를 실행하거나, 작업을 수행하는 사전 제작된 프롬프트입니다. BMad 설치 도구는 설치 시점에 선택한 모듈을 기반으로 스킬을 생성합니다. 이후 모듈을 추가·삭제·변경했다면 설치 도구를 다시 실행하여 스킬을 최신 상태로 유지하세요([문제 해결](#troubleshooting) 참고).
 
-## Skills vs. Agent Menu Triggers
+## 스킬 vs. 에이전트 메뉴 트리거
 
-BMad offers two ways to start work, and they serve different purposes.
+BMad는 작업을 시작하는 두 가지 방법을 제공하며, 각각 다른 목적으로 사용됩니다.
 
-| Mechanism | How you invoke it | What happens |
+| 방식 | 호출 방법 | 동작 |
 | --- | --- | --- |
-| **Skill** | Type the skill name (e.g. `bmad-help`) in your IDE | Directly loads an agent, runs a workflow, or executes a task |
-| **Agent menu trigger** | Load an agent first, then type a short code (e.g. `DS`) | The agent interprets the code and starts the matching workflow while staying in character |
+| **스킬** | IDE에서 스킬 이름 입력 (예: `bmad-help`) | 에이전트를 직접 불러오거나, 워크플로우를 실행하거나, 작업을 수행 |
+| **에이전트 메뉴 트리거** | 먼저 에이전트를 불러온 후 짧은 코드 입력 (예: `DS`) | 에이전트가 코드를 해석하여 캐릭터를 유지한 채 해당 워크플로우 시작 |
 
-Agent menu triggers require an active agent session. Use skills when you know which workflow you want. Use triggers when you are already working with an agent and want to switch tasks without leaving the conversation.
+에이전트 메뉴 트리거는 활성 에이전트 세션이 필요합니다. 원하는 워크플로우를 알고 있을 때는 스킬을 사용하세요. 이미 에이전트와 작업 중이고 대화를 벗어나지 않고 작업을 전환하고 싶을 때는 트리거를 사용하세요.
 
-## How Skills Are Generated
+## 스킬 생성 방식
 
-When you run `npx bmad-method install`, the installer reads the manifests for every selected module and writes one skill per agent, workflow, task, and tool. Each skill is a directory containing a `SKILL.md` file that instructs the AI to load the corresponding source file and follow its instructions.
+`npx bmad-method install`을 실행하면 설치 도구가 선택한 모든 모듈의 매니페스트를 읽고, 에이전트·워크플로우·태스크·도구별로 스킬을 하나씩 생성합니다. 각 스킬은 AI가 해당 소스 파일을 불러와 지시에 따르도록 하는 `SKILL.md` 파일이 담긴 디렉터리입니다.
 
-The installer uses templates for each skill type:
+설치 도구는 스킬 유형별 템플릿을 사용합니다.
 
-| Skill type | What the generated file does |
+| 스킬 유형 | 생성 파일의 역할 |
 | --- | --- |
-| **Agent launcher** | Loads the agent persona file, activates its menu, and stays in character |
-| **Workflow skill** | Loads the workflow config and follows its steps |
-| **Task skill** | Loads a standalone task file and follows its instructions |
-| **Tool skill** | Loads a standalone tool file and follows its instructions |
+| **에이전트 런처** | 에이전트 페르소나 파일을 불러오고, 메뉴를 활성화하며, 캐릭터를 유지 |
+| **워크플로우 스킬** | 워크플로우 설정을 불러와 단계별로 진행 |
+| **태스크 스킬** | 독립 태스크 파일을 불러와 지시에 따라 실행 |
+| **도구 스킬** | 독립 도구 파일을 불러와 지시에 따라 실행 |
 
-:::note[Re-running the installer]
-If you add or remove modules, run the installer again. It regenerates all skill files to match your current module selection.
+:::note[설치 도구 재실행]
+모듈을 추가하거나 삭제했다면 설치 도구를 다시 실행하세요. 현재 모듈 선택에 맞게 모든 스킬 파일이 재생성됩니다.
 :::
 
-## Where Skill Files Live
+## 스킬 파일 위치
 
-The installer writes skill files into an IDE-specific directory inside your project. The exact path depends on which IDE you selected during installation.
+설치 도구는 프로젝트 내 IDE별 디렉터리에 스킬 파일을 저장합니다. 정확한 경로는 설치 시 선택한 IDE에 따라 다릅니다.
 
-| IDE / CLI | Skills directory |
+| IDE / CLI | 스킬 디렉터리 |
 | --- | --- |
 | Claude Code | `.claude/skills/` |
 | Cursor | `.cursor/skills/` |
 | Windsurf | `.windsurf/skills/` |
-| Other IDEs | See the installer output for the target path |
+| 기타 IDE | 설치 도구 출력에서 대상 경로 확인 |
 
-Each skill is a directory containing a `SKILL.md` file. For example, a Claude Code installation looks like:
+각 스킬은 `SKILL.md` 파일이 담긴 디렉터리입니다. 예를 들어 Claude Code 설치 시 구조는 다음과 같습니다.
 
 ```text
 .claude/skills/
@@ -59,58 +59,58 @@ Each skill is a directory containing a `SKILL.md` file. For example, a Claude Co
 └── ...
 ```
 
-The directory name determines the skill name in your IDE. For example, the directory `bmad-agent-dev/` registers the skill `bmad-agent-dev`.
+디렉터리 이름이 IDE에서 스킬 이름이 됩니다. 예를 들어 `bmad-agent-dev/` 디렉터리는 `bmad-agent-dev` 스킬로 등록됩니다.
 
-## How to Discover Your Skills
+## 스킬 확인 방법
 
-Type the skill name in your IDE to invoke it. Some platforms require you to enable skills in settings before they appear.
+IDE에서 스킬 이름을 입력하면 호출됩니다. 일부 플랫폼은 스킬이 표시되기 전에 설정에서 스킬을 활성화해야 합니다.
 
-Run `bmad-help` for context-aware guidance on your next step.
+다음 단계에 대한 컨텍스트 기반 안내를 받으려면 `bmad-help`를 실행하세요.
 
-:::tip[Quick discovery]
-The generated skill directories in your project are the canonical list. Open them in your file explorer to see every skill with its description.
+:::tip[빠른 확인]
+프로젝트 내 생성된 스킬 디렉터리가 정식 스킬 목록입니다. 파일 탐색기에서 열어 모든 스킬과 설명을 확인하세요.
 :::
 
-## Skill Categories
+## 스킬 카테고리
 
-### Agent Skills
+### 에이전트 스킬
 
-Agent skills load a specialized AI persona with a defined role, communication style, and menu of workflows. Once loaded, the agent stays in character and responds to menu triggers.
+에이전트 스킬은 정해진 역할, 커뮤니케이션 스타일, 워크플로우 메뉴를 갖춘 전문화된 AI 페르소나를 불러옵니다. 불러온 후 에이전트는 캐릭터를 유지하며 메뉴 트리거에 응답합니다.
 
-| Example skill | Agent | Role |
+| 예시 스킬 | 에이전트 | 역할 |
 | --- | --- | --- |
-| `bmad-agent-dev` | Amelia (Developer) | Implements stories with strict adherence to specs |
-| `bmad-pm` | John (Product Manager) | Creates and validates PRDs |
-| `bmad-architect` | Winston (Architect) | Designs system architecture |
+| `bmad-agent-dev` | Amelia (개발자) | 명세를 엄격히 준수하며 스토리 구현 |
+| `bmad-pm` | John (프로덕트 매니저) | PRD 생성 및 검증 |
+| `bmad-architect` | Winston (아키텍트) | 시스템 아키텍처 설계 |
 
-See [Agents](./agents.md) for the full list of default agents and their triggers.
+기본 에이전트 전체 목록과 트리거는 [에이전트](./agents.md)를 참고하세요.
 
-### Workflow Skills
+### 워크플로우 스킬
 
-Workflow skills run a structured, multi-step process without loading an agent persona first. They load a workflow configuration and follow its steps.
+워크플로우 스킬은 에이전트 페르소나를 먼저 불러오지 않고 구조화된 다단계 프로세스를 실행합니다. 워크플로우 설정을 불러와 단계별로 진행합니다.
 
-| Example skill | Purpose |
+| 예시 스킬 | 목적 |
 | --- | --- |
-| `bmad-product-brief` | Create a product brief — guided discovery when your concept is clear |
-| `bmad-prfaq` | [Working Backwards PRFAQ](../explanation/analysis-phase.md#prfaq-working-backwards) challenge to stress-test your product concept |
-| `bmad-create-prd` | Create a Product Requirements Document |
-| `bmad-create-architecture` | Design system architecture |
-| `bmad-create-epics-and-stories` | Create epics and stories |
-| `bmad-dev-story` | Implement a story |
-| `bmad-code-review` | Run a code review |
-| `bmad-quick-dev` | Unified quick flow — clarify intent, plan, implement, review, present |
+| `bmad-product-brief` | 제품 브리프 작성 — 개념이 명확할 때 가이드형 탐색 진행 |
+| `bmad-prfaq` | 제품 개념을 검증하는 [워킹 백워즈 PRFAQ](../explanation/analysis-phase.md#prfaq-working-backwards) 챌린지 |
+| `bmad-create-prd` | 제품 요구사항 문서(PRD) 작성 |
+| `bmad-create-architecture` | 시스템 아키텍처 설계 |
+| `bmad-create-epics-and-stories` | 에픽 및 스토리 생성 |
+| `bmad-dev-story` | 스토리 구현 |
+| `bmad-code-review` | 코드 리뷰 실행 |
+| `bmad-quick-dev` | 통합 퀵 플로우 — 의도 명확화, 계획, 구현, 리뷰, 결과 제시 |
 
-See [Workflow Map](./workflow-map.md) for the complete workflow reference organized by phase.
+전체 워크플로우 참고자료는 [워크플로우 맵](./workflow-map.md)을 확인하세요.
 
-### Task and Tool Skills
+### 태스크 및 도구 스킬
 
-Tasks and tools are standalone operations that do not require an agent or workflow context.
+태스크와 도구는 에이전트나 워크플로우 컨텍스트 없이 독립적으로 실행되는 작업입니다.
 
-**BMad-Help: Your Intelligent Guide**
+**BMad-Help: 지능형 가이드**
 
-`bmad-help` is your primary interface for discovering what to do next. It inspects your project, understands natural language queries, and recommends the next required or optional step based on your installed modules.
+`bmad-help`는 다음에 할 일을 안내하는 기본 인터페이스입니다. 프로젝트를 분석하고, 자연어 쿼리를 이해하며, 설치된 모듈을 기반으로 필수 또는 선택 단계를 추천합니다.
 
-:::note[Example]
+:::note[예시]
 ```
 bmad-help
 bmad-help I have a SaaS idea and know all the features. Where do I start?
@@ -118,18 +118,18 @@ bmad-help What are my options for UX design?
 ```
 :::
 
-**Other Core Tasks and Tools**
+**기타 핵심 태스크 및 도구**
 
-The core module includes 11 built-in tools — reviews, compression, brainstorming, document management, and more. See [Core Tools](./core-tools.md) for the complete reference.
+핵심 모듈에는 리뷰, 압축, 브레인스토밍, 문서 관리 등 11개의 내장 도구가 포함됩니다. 전체 참고자료는 [핵심 도구](./core-tools.md)를 확인하세요.
 
-## Naming Convention
+## 명명 규칙
 
-All skills use the `bmad-` prefix followed by a descriptive name (e.g., `bmad-agent-dev`, `bmad-create-prd`, `bmad-help`). See [Modules](./modules.md) for available modules.
+모든 스킬은 `bmad-` 접두사에 설명적인 이름을 붙여 사용합니다(예: `bmad-agent-dev`, `bmad-create-prd`, `bmad-help`). 사용 가능한 모듈은 [모듈](./modules.md)을 참고하세요.
 
-## Troubleshooting
+## 문제 해결 {#troubleshooting}
 
-**Skills not appearing after install.** Some platforms require skills to be explicitly enabled in settings. Check your IDE's documentation or ask your AI assistant how to enable skills. You may also need to restart your IDE or reload the window.
+**설치 후 스킬이 나타나지 않는 경우.** 일부 플랫폼은 스킬을 설정에서 명시적으로 활성화해야 합니다. IDE 문서를 확인하거나 AI 어시스턴트에게 스킬 활성화 방법을 문의하세요. IDE를 재시작하거나 창을 새로고침해야 할 수도 있습니다.
 
-**Expected skills are missing.** The installer only generates skills for modules you selected. Run `npx bmad-method install` again and verify your module selection. Check that the skill files exist in the expected directory.
+**예상 스킬이 없는 경우.** 설치 도구는 선택한 모듈에 대한 스킬만 생성합니다. `npx bmad-method install`을 다시 실행하여 모듈 선택을 확인하세요. 스킬 파일이 예상 디렉터리에 있는지도 확인하세요.
 
-**Skills from a removed module still appear.** The installer does not delete old skill files automatically. Remove the stale directories from your IDE's skills directory, or delete the entire skills directory and re-run the installer for a clean set.
+**삭제한 모듈의 스킬이 계속 표시되는 경우.** 설치 도구는 오래된 스킬 파일을 자동으로 삭제하지 않습니다. IDE 스킬 디렉터리에서 오래된 디렉터리를 직접 삭제하거나, 전체 스킬 디렉터리를 삭제한 후 설치 도구를 다시 실행하여 깨끗한 스킬 세트를 구성하세요.

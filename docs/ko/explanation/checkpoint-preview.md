@@ -1,92 +1,92 @@
 ---
-title: "Checkpoint Preview"
-description: LLM-assisted human-in-the-loop review that guides you through a change from purpose to details
+title: "체크포인트 프리뷰"
+description: 변경 사항을 목적부터 세부사항까지 안내하는 LLM 지원 휴먼-인-더-루프 리뷰
 sidebar:
   order: 3
 ---
 
-`bmad-checkpoint-preview` is an interactive, LLM-assisted human-in-the-loop review workflow. It walks you through a code change — from purpose and context into details — so you can make an informed decision about whether to ship, rework, or dig deeper.
+`bmad-checkpoint-preview`는 인터랙티브한 LLM 지원 휴먼-인-더-루프 리뷰 워크플로우입니다. 코드 변경 사항을 목적과 컨텍스트부터 세부사항까지 단계별로 안내하여, 배포할지, 수정할지, 더 깊이 살펴볼지 충분한 정보를 바탕으로 결정할 수 있게 합니다.
 
-![Checkpoint Preview workflow diagram](/diagrams/checkpoint-preview-diagram.png)
+![체크포인트 프리뷰 워크플로우 다이어그램](/diagrams/checkpoint-preview-diagram.png)
 
-## The Typical Flow
+## 일반적인 흐름
 
-You run `bmad-quick-dev`. It clarifies your intent, builds a spec, implements the change, and when it's done it appends a review trail to the spec file and opens it in your editor. You look at the spec and see the change touched 20 files across several modules.
+`bmad-quick-dev`를 실행합니다. 의도를 명확히 하고, 명세서를 만들고, 변경 사항을 구현한 뒤, 완료되면 명세서 파일에 리뷰 트레일을 추가하고 편집기에서 엽니다. 명세서를 보니 변경이 여러 모듈에 걸쳐 20개 파일에 영향을 미쳤습니다.
 
-You could eyeball the diff. But 20 files is where eyeballing starts to fail — you lose the thread, miss a connection between two distant changes, or approve something you didn't fully understand. So instead, you say "checkpoint" and the LLM walks you through it.
+diff를 눈으로 훑어볼 수도 있습니다. 하지만 20개 파일이면 눈대중 검토가 실패하기 시작하는 지점입니다. 흐름을 잃고, 멀리 떨어진 두 변경 사항 간의 연결을 놓치거나, 충분히 이해하지 못한 채 승인할 수 있습니다. 대신 "checkpoint"라고 하면 LLM이 단계별로 안내합니다.
 
-That handoff — from autonomous implementation back to human judgment — is the primary use case. Quick-dev runs long with minimal supervision. Checkpoint Preview is where you take back the wheel.
+자율 구현에서 인간의 판단으로 넘어가는 이 전환이 바로 주요 사용 사례입니다. Quick-dev는 최소한의 감독으로 길게 실행됩니다. 체크포인트 프리뷰는 다시 주도권을 잡는 시점입니다.
 
-## Why It Exists
+## 왜 존재하는가?
 
-Code review has two failure modes. In one, the reviewer skims the diff, nothing jumps out, and they approve. In the other, they methodically read every file but lose the thread — they see the trees and miss the forest. Both result in the same outcome: the review didn't catch the thing that mattered.
+코드 리뷰에는 두 가지 실패 방식이 있습니다. 하나는 리뷰어가 diff를 훑어보고 눈에 띄는 것이 없어서 승인하는 경우입니다. 다른 하나는 모든 파일을 꼼꼼히 읽지만 흐름을 잃는 경우입니다. 나무는 보지만 숲을 놓치게 됩니다. 두 경우 모두 같은 결과로 이어집니다. 리뷰가 중요한 것을 잡아내지 못한 것입니다.
 
-The underlying issue is sequencing. A raw diff presents changes in file order, which is almost never the order that builds understanding. You see a helper function before you know why it exists. You see a schema change before you understand what feature it supports. The reviewer has to reconstruct the author's intent from scattered clues, and that reconstruction is where attention fails.
+근본적인 문제는 순서입니다. 원시 diff는 변경 사항을 파일 순서대로 보여주는데, 이는 이해를 쌓는 순서와 거의 일치하지 않습니다. 왜 존재하는지 알기 전에 헬퍼 함수를 봅니다. 어떤 기능을 지원하는지 이해하기 전에 스키마 변경을 봅니다. 리뷰어는 흩어진 단서에서 작성자의 의도를 재구성해야 하고, 바로 그 재구성 과정에서 집중력이 흐트러집니다.
 
-Checkpoint Preview solves this by making the LLM do the reconstruction work. It reads the diff, the spec (if one exists), and the surrounding codebase, then presents the change in an order designed for comprehension — not for `git diff`.
+체크포인트 프리뷰는 LLM이 재구성 작업을 하게 함으로써 이 문제를 해결합니다. diff, 명세서(있는 경우), 주변 코드베이스를 읽고, `git diff` 순서가 아니라 이해를 위해 설계된 순서로 변경 사항을 제시합니다.
 
-## How It Works
+## 동작 방식
 
-The workflow has five steps. Each step builds on the previous one, progressively shifting from "what is this?" toward "should we ship it?"
+워크플로우는 5단계로 구성됩니다. 각 단계는 이전 단계를 기반으로 "이게 뭔가?"에서 "배포해야 하나?"로 점진적으로 이동합니다.
 
-### 1. Orientation
+### 1. 오리엔테이션
 
-The workflow identifies the change (from a PR, commit, branch, spec file, or the current git state) and produces a one-line intent summary plus surface area stats: files changed, modules touched, lines of logic, boundary crossings, and new public interfaces.
+워크플로우가 변경 사항(PR, 커밋, 브랜치, 명세서 파일, 또는 현재 git 상태에서)을 파악하고 한 줄 요약과 표면적 통계를 제공합니다. 변경된 파일 수, 영향받은 모듈, 로직 라인 수, 경계 교차, 새 공개 인터페이스 등이 포함됩니다.
 
-This is the "is this what I think it is?" moment. Before reading any code, the reviewer confirms they're looking at the right thing and calibrates their expectations for scope.
+이것이 "내가 생각한 것이 맞는가?"를 확인하는 순간입니다. 코드를 읽기 전에 올바른 것을 보고 있는지 확인하고 범위에 대한 기대치를 조정합니다.
 
-### 2. Walkthrough
+### 2. 워크스루
 
-The change is organized by **concern** — cohesive design intents like "input validation" or "API contract" — not by file. Each concern gets a short explanation of *why* this approach was chosen, followed by clickable `path:line` stops that the reviewer can follow through the code.
+변경 사항이 파일이 아니라 **관심사(concern)** 별로 구성됩니다. "입력 유효성 검사"나 "API 계약"처럼 응집력 있는 설계 의도로 묶입니다. 각 관심사에는 왜 이 접근 방식이 선택되었는지 간단한 설명과 함께, 리뷰어가 코드를 따라갈 수 있는 클릭 가능한 `path:line` 지점이 제공됩니다.
 
-This is the design judgment step. The reviewer evaluates whether the approach is right for the system, not whether the code is correct. Concerns are sequenced top-down: the highest-level intent first, then supporting implementation. The reviewer never encounters a reference to something they haven't seen yet.
+이것이 설계 판단 단계입니다. 리뷰어는 코드가 올바른지가 아니라, 접근 방식이 시스템에 적합한지 평가합니다. 관심사는 위에서 아래로 순서가 정해집니다. 최고 수준의 의도 먼저, 그 다음 지원 구현. 리뷰어는 아직 보지 못한 것에 대한 참조를 절대 먼저 접하지 않습니다.
 
-### 3. Detail Pass
+### 3. 세부 검토
 
-After the reviewer understands the design, the workflow surfaces 2-5 spots where a mistake would have the highest blast radius. These are tagged by risk category — `[auth]`, `[schema]`, `[billing]`, `[public API]`, `[security]`, and others — and ordered by how much breaks if they're wrong.
+리뷰어가 설계를 이해한 후, 워크플로우는 실수가 가장 큰 피해를 줄 수 있는 2~5개 지점을 표시합니다. 위험 카테고리로 태그됩니다. `[auth]`, `[schema]`, `[billing]`, `[public API]`, `[security]` 등이며, 잘못될 경우 얼마나 많은 것이 망가지는지 순서로 정렬됩니다.
 
-This is not a bug hunt. Automated tests and CI handle correctness. The detail pass activates risk awareness: "here are the places where being wrong costs the most." If the reviewer wants to go deeper on a specific area, they can say "dig into [area]" for a targeted correctness-focused re-review.
+버그 헌팅이 아닙니다. 자동화된 테스트와 CI가 정확성을 처리합니다. 세부 검토는 위험 인식을 활성화합니다. "여기가 틀리면 가장 큰 비용이 드는 곳입니다." 특정 영역을 더 깊이 살펴보고 싶다면 "dig into [영역]"이라고 하면 해당 영역에 집중한 정확성 중심의 재검토를 받을 수 있습니다.
 
-If the spec went through adversarial review loops (machine hardening), those findings are surfaced here too — not the bugs that were fixed, but the decisions that the review loop flagged that the reviewer should be aware of.
+명세서가 적대적 리뷰 루프(기계 강화)를 거쳤다면, 그 결과도 여기서 표시됩니다. 수정된 버그가 아니라, 리뷰어가 알아야 할 리뷰 루프가 표시한 결정들입니다.
 
-### 4. Testing
+### 4. 테스팅
 
-Suggests 2-5 ways to manually observe the change working. Not automated test commands — manual observations that build confidence no test suite provides. A UI interaction to try, a CLI command to run, an API request to send, with expected results for each.
+변경 사항이 실제로 동작하는지 수동으로 확인하는 2~5가지 방법을 제안합니다. 자동화된 테스트 명령이 아니라, 어떤 테스트 스위트도 제공하지 않는 확신을 쌓는 수동 관찰입니다. 시도해볼 UI 상호작용, 실행할 CLI 명령, 보낼 API 요청과 각각의 예상 결과가 포함됩니다.
 
-If the change has no user-visible behavior, it says so. No invented busywork.
+변경 사항에 사용자가 볼 수 있는 동작이 없다면 그렇게 알려줍니다. 억지로 만들어낸 작업은 없습니다.
 
-### 5. Wrap-Up
+### 5. 마무리
 
-The reviewer makes the call: approve, rework, or keep discussing. If approving a PR, the workflow can help with `gh pr review --approve`. If reworking, it helps diagnose whether the problem was the approach, the spec, or the implementation, and helps draft actionable feedback tied to specific code locations.
+리뷰어가 결정을 내립니다. 승인, 수정, 또는 계속 논의. PR을 승인한다면 `gh pr review --approve`에 도움을 받을 수 있습니다. 수정이 필요하다면 문제가 접근 방식, 명세서, 구현 중 어디에 있는지 진단하고 특정 코드 위치에 연결된 실행 가능한 피드백 초안 작성을 도와줍니다.
 
-## It's a Conversation, Not a Report
+## 보고서가 아닌 대화입니다
 
-The workflow presents each step as a starting point, not a final word. Between steps — or in the middle of one — you can talk to the LLM, ask questions, challenge its framing, or pull in other skills to get a different perspective:
+워크플로우는 각 단계를 최종 답이 아닌 시작점으로 제시합니다. 단계 사이에, 또는 진행 중에 LLM과 대화하고, 질문하고, 프레이밍에 도전하거나, 다른 스킬을 불러 다른 관점을 얻을 수 있습니다.
 
-- **"run advanced elicitation on the error handling"** — push the LLM to reconsider and refine its analysis of a specific area
-- **"party mode on whether this schema migration is safe"** — bring multiple agent perspectives into a focused debate
-- **"run code review"** — generate structured agentic findings with adversarial and edge-case analysis
+- **"run advanced elicitation on the error handling"** — LLM이 특정 영역의 분석을 재검토하고 정교화하도록 유도
+- **"party mode on whether this schema migration is safe"** — 여러 에이전트 관점으로 집중 토론 진행
+- **"run code review"** — 적대적 분석과 엣지 케이스 분석을 포함한 구조화된 에이전틱 결과 생성
 
-The checkpoint workflow doesn't lock you into a linear path. It gives you structure when you want it and gets out of the way when you want to explore. The five steps are there to make sure you see the whole picture, but how deep you go at each step — and what tools you bring in — is entirely up to you.
+체크포인트 워크플로우는 선형적 경로에 가두지 않습니다. 필요할 때 구조를 제공하고, 탐색하고 싶을 때는 비켜섭니다. 5단계는 전체 그림을 볼 수 있도록 보장하지만, 각 단계를 얼마나 깊이 파고들지, 어떤 도구를 가져올지는 전적으로 여러분에게 달려 있습니다.
 
-## The Review Trail
+## 리뷰 트레일
 
-The walkthrough step works best when it has a **Suggested Review Order** — a list of stops the spec author wrote to guide reviewers through the change. When a spec includes this, the workflow uses it directly.
+워크스루 단계는 **Suggested Review Order**가 있을 때 가장 잘 동작합니다. 명세서 작성자가 리뷰어를 안내하기 위해 작성한 지점 목록입니다. 명세서에 이것이 포함되어 있으면 워크플로우가 그것을 직접 사용합니다.
 
-When no author-produced trail exists, the workflow generates one from the diff and codebase context. A generated trail is lower quality than an author-produced one, but far better than reading changes in file order.
+작성자가 만든 트레일이 없으면 워크플로우가 diff와 코드베이스 컨텍스트에서 생성합니다. 생성된 트레일은 작성자가 만든 것보다 품질이 낮지만, 파일 순서대로 변경 사항을 읽는 것보다는 훨씬 낫습니다.
 
-## When to Use It
+## 언제 사용하나요?
 
-The primary scenario is the handoff from `bmad-quick-dev`: the implementation is done, the spec file is open in your editor with a review trail appended, and you need to decide whether to ship. Say "checkpoint" and go.
+주요 시나리오는 `bmad-quick-dev`에서의 전환입니다. 구현이 완료되고, 명세서 파일이 리뷰 트레일이 추가된 채로 편집기에 열려 있으며, 배포 여부를 결정해야 할 때입니다. "checkpoint"라고 말하고 시작하면 됩니다.
 
-It also works standalone:
+단독으로도 동작합니다.
 
-- **Reviewing a PR** — especially one with more than a handful of files or cross-cutting changes
-- **Onboarding to a change** — when you need to understand what happened on a branch you didn't write
-- **Sprint review** — the workflow can pick up stories marked `review` in your sprint status file
+- **PR 리뷰** — 특히 파일이 여러 개이거나 교차 변경이 있는 경우
+- **변경 사항 파악** — 직접 작성하지 않은 브랜치에서 무슨 일이 있었는지 이해해야 할 때
+- **스프린트 리뷰** — 워크플로우가 스프린트 상태 파일에서 `review`로 표시된 스토리를 가져올 수 있음
 
-Invoke it by saying "checkpoint" or "walk me through this change." It works in any terminal, but you'll get more out of it inside an IDE — VS Code, Cursor, or similar — because the workflow produces `path:line` references at every step. In an IDE-embedded terminal those are clickable, so you can jump from file to file as you follow the review trail.
+"checkpoint" 또는 "walk me through this change"라고 말하면 실행됩니다. 모든 터미널에서 동작하지만, IDE(VS Code, Cursor 또는 유사한 환경) 내에서 더 많은 이점을 얻을 수 있습니다. 워크플로우가 모든 단계에서 `path:line` 참조를 생성하는데, IDE 내장 터미널에서는 이것이 클릭 가능하여 리뷰 트레일을 따라 파일 간 이동이 가능합니다.
 
-## What It Is Not
+## 하지 않는 것
 
-Checkpoint Preview is not a substitute for automated review. It does not run linters, type checkers, or test suites. It does not assign severity scores or produce pass/fail verdicts. It is a reading guide that helps a human apply their judgment where it matters most.
+체크포인트 프리뷰는 자동화된 리뷰를 대체하지 않습니다. 린터, 타입 검사기, 테스트 스위트를 실행하지 않습니다. 심각도 점수를 부여하거나 통과/실패 판정을 내리지 않습니다. 인간이 가장 중요한 곳에 판단을 적용할 수 있도록 안내하는 독해 가이드입니다.

@@ -1,112 +1,112 @@
 ---
-title: "Preventing Agent Conflicts"
-description: How architecture prevents conflicts when multiple agents implement a system
+title: "에이전트 충돌 방지"
+description: 여러 에이전트가 시스템을 구현할 때 아키텍처가 충돌을 방지하는 방법
 sidebar:
   order: 4
 ---
 
-When multiple AI agents implement different parts of a system, they can make conflicting technical decisions. Architecture documentation prevents this by establishing shared standards.
+여러 AI 에이전트가 시스템의 서로 다른 부분을 구현하다 보면 기술적 결정이 충돌할 수 있습니다. 아키텍처 문서는 공통 표준을 확립함으로써 이를 방지합니다.
 
-## Common Conflict Types
+## 흔한 충돌 유형
 
-### API Style Conflicts
+### API 스타일 충돌
 
-Without architecture:
-- Agent A uses REST with `/users/{id}`
-- Agent B uses GraphQL mutations
-- Result: Inconsistent API patterns, confused consumers
+아키텍처가 없을 때:
+- 에이전트 A는 `/users/{id}` 형식의 REST 사용
+- 에이전트 B는 GraphQL 뮤테이션 사용
+- 결과: 일관성 없는 API 패턴, 혼란스러운 소비자
 
-With architecture:
-- ADR specifies: "Use GraphQL for all client-server communication"
-- All agents follow the same pattern
+아키텍처가 있을 때:
+- ADR에 명시: "클라이언트-서버 통신에는 GraphQL을 사용한다"
+- 모든 에이전트가 동일한 패턴을 따름
 
-### Database Design Conflicts
+### 데이터베이스 설계 충돌
 
-Without architecture:
-- Agent A uses snake_case column names
-- Agent B uses camelCase column names
-- Result: Inconsistent schema, confusing queries
+아키텍처가 없을 때:
+- 에이전트 A는 snake_case 컬럼명 사용
+- 에이전트 B는 camelCase 컬럼명 사용
+- 결과: 일관성 없는 스키마, 혼란스러운 쿼리
 
-With architecture:
-- Standards document specifies naming conventions
-- All agents follow the same patterns
+아키텍처가 있을 때:
+- 표준 문서에 네이밍 컨벤션 명시
+- 모든 에이전트가 동일한 패턴을 따름
 
-### State Management Conflicts
+### 상태 관리 충돌
 
-Without architecture:
-- Agent A uses Redux for global state
-- Agent B uses React Context
-- Result: Multiple state management approaches, complexity
+아키텍처가 없을 때:
+- 에이전트 A는 전역 상태에 Redux 사용
+- 에이전트 B는 React Context 사용
+- 결과: 여러 상태 관리 방식의 혼재, 복잡성 증가
 
-With architecture:
-- ADR specifies state management approach
-- All agents implement consistently
+아키텍처가 있을 때:
+- ADR에 상태 관리 방식 명시
+- 모든 에이전트가 일관되게 구현
 
-## How Architecture Prevents Conflicts
+## 아키텍처가 충돌을 방지하는 방법
 
-### 1. Explicit Decisions via ADRs
+### 1. ADR을 통한 명시적 결정
 
-Every significant technology choice is documented with:
-- Context (why this decision matters)
-- Options considered (what alternatives exist)
-- Decision (what we chose)
-- Rationale (why we chose it)
-- Consequences (trade-offs accepted)
+모든 중요한 기술 선택은 다음 내용과 함께 문서화됩니다:
+- 맥락 (이 결정이 중요한 이유)
+- 검토한 옵션 (어떤 대안이 있었는지)
+- 결정 (무엇을 선택했는지)
+- 근거 (왜 선택했는지)
+- 결과 (수용한 트레이드오프)
 
-### 2. FR/NFR-Specific Guidance
+### 2. FR/NFR별 가이드라인
 
-Architecture maps each functional requirement to technical approach:
-- FR-001: User Management → GraphQL mutations
-- FR-002: Mobile App → Optimized queries
+아키텍처는 각 기능 요구사항을 기술적 접근 방식에 매핑합니다:
+- FR-001: 사용자 관리 → GraphQL 뮤테이션
+- FR-002: 모바일 앱 → 최적화된 쿼리
 
-### 3. Standards and Conventions
+### 3. 표준 및 컨벤션
 
-Explicit documentation of:
-- Directory structure
-- Naming conventions
-- Code organization
-- Testing patterns
+다음을 명시적으로 문서화합니다:
+- 디렉터리 구조
+- 네이밍 컨벤션
+- 코드 구성 방식
+- 테스트 패턴
 
-## Architecture as Shared Context
+## 공유 컨텍스트로서의 아키텍처
 
-Think of architecture as the shared context that all agents read before implementing:
+아키텍처를 모든 에이전트가 구현 전에 읽는 공유 컨텍스트로 생각하세요:
 
 ```text
-PRD: "What to build"
+PRD: "무엇을 만들 것인가"
      ↓
-Architecture: "How to build it"
+아키텍처: "어떻게 만들 것인가"
      ↓
-Agent A reads architecture → implements Epic 1
-Agent B reads architecture → implements Epic 2
-Agent C reads architecture → implements Epic 3
+에이전트 A가 아키텍처를 읽고 → 에픽 1 구현
+에이전트 B가 아키텍처를 읽고 → 에픽 2 구현
+에이전트 C가 아키텍처를 읽고 → 에픽 3 구현
      ↓
-Result: Consistent implementation
+결과: 일관된 구현
 ```
 
-## Key ADR Topics
+## 주요 ADR 주제
 
-Common decisions that prevent conflicts:
+충돌을 방지하는 일반적인 결정 항목:
 
-| Topic            | Example Decision                             |
-| ---------------- | -------------------------------------------- |
-| API Style        | GraphQL vs REST vs gRPC                      |
-| Database         | PostgreSQL vs MongoDB                        |
-| Auth             | JWT vs Sessions                              |
-| State Management | Redux vs Context vs Zustand                  |
-| Styling          | CSS Modules vs Tailwind vs Styled Components |
-| Testing          | Jest + Playwright vs Vitest + Cypress        |
+| 주제             | 결정 예시                                        |
+| ---------------- | ------------------------------------------------ |
+| API 스타일       | GraphQL vs REST vs gRPC                          |
+| 데이터베이스     | PostgreSQL vs MongoDB                            |
+| 인증             | JWT vs 세션                                      |
+| 상태 관리        | Redux vs Context vs Zustand                      |
+| 스타일링         | CSS Modules vs Tailwind vs Styled Components     |
+| 테스팅           | Jest + Playwright vs Vitest + Cypress            |
 
-## Anti-Patterns to Avoid
+## 피해야 할 안티패턴
 
-:::caution[Common Mistakes]
-- **Implicit Decisions** — "We'll figure out the API style as we go" leads to inconsistency
-- **Over-Documentation** — Documenting every minor choice causes analysis paralysis
-- **Stale Architecture** — Documents written once and never updated cause agents to follow outdated patterns
+:::caution[흔한 실수]
+- **암묵적 결정** — "API 스타일은 진행하면서 정하겠다"는 식의 접근은 불일관성을 초래합니다
+- **과도한 문서화** — 사소한 선택까지 모두 문서화하면 분석 마비(analysis paralysis)가 발생합니다
+- **오래된 아키텍처** — 한 번 작성하고 업데이트하지 않은 문서는 에이전트가 구식 패턴을 따르게 만듭니다
 :::
 
-:::tip[Correct Approach]
-- Document decisions that cross epic boundaries
-- Focus on conflict-prone areas
-- Update architecture as you learn
-- Use `bmad-correct-course` for significant changes
+:::tip[올바른 접근법]
+- 에픽 경계를 넘나드는 결정을 문서화하세요
+- 충돌이 자주 발생하는 영역에 집중하세요
+- 새로 알게 된 사실에 따라 아키텍처를 업데이트하세요
+- 중요한 변경이 있을 때는 `bmad-correct-course`를 사용하세요
 :::

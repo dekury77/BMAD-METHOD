@@ -1,59 +1,59 @@
 ---
-title: "Party Mode"
-description: Multi-agent collaboration - get all your AI agents in one conversation
+title: "파티 모드"
+description: 멀티 에이전트 협업 - 하나의 대화에서 모든 AI 에이전트를 소집합니다
 sidebar:
   order: 7
 ---
 
-Get all your AI agents in one conversation.
+하나의 대화에서 모든 AI 에이전트를 소집하세요.
 
-## What is Party Mode?
+## 파티 모드란?
 
-Run `bmad-party-mode` and you've got your whole AI team in one room - PM, Architect, Dev, UX Designer, whoever you need. BMad Master orchestrates, picking relevant agents per message. Agents respond in character, agree, disagree, and build on each other's ideas.
+`bmad-party-mode`를 실행하면 PM, 아키텍트, 개발자, UX 디자이너 등 필요한 팀원이 한 자리에 모입니다. BMad Master가 전체를 조율하며 각 메시지에 적합한 에이전트를 선택합니다. 에이전트들은 자신의 역할에 맞게 응답하고, 서로 동의하거나 반박하며 아이디어를 발전시킵니다.
 
-The conversation continues as long as you want. Ask follow-ups, push back on answers, redirect the discussion - it's a real back-and-forth with your agents until you're done.
+대화는 원하는 만큼 계속할 수 있습니다. 후속 질문을 던지거나, 답변에 이의를 제기하거나, 주제를 바꿀 수도 있습니다. 원하는 결론에 도달할 때까지 에이전트들과 진짜 토론을 이어가세요.
 
-**Good for:**
+**활용하기 좋은 상황:**
 
-- Big decisions with tradeoffs
-- Brainstorming sessions
-- Post-mortems when things go wrong
-- Sprint retrospectives and planning
+- 트레이드오프가 있는 중요한 의사결정
+- 브레인스토밍 세션
+- 문제가 발생했을 때의 사후 분석(post-mortem)
+- 스프린트 회고 및 플래닝
 
-## Examples
+## 예시
 
-### Calling Out Bad Architecture
+### 잘못된 아키텍처 짚기
 
-**You:** "Okay team, our last sprint was a disaster. The authentication service went down three times. Who screwed this up?"
+**You:** "자, 팀, 지난 스프린트는 정말 엉망이었어요. 인증 서비스가 세 번이나 다운됐는데, 누가 이걸 망쳤나요?"
 
-**Architect:** "The design was sound - distributed authentication with proper fallbacks. If implementation deviated from the spec..."
+**아키텍트:** "설계는 문제없었습니다. 적절한 폴백을 갖춘 분산 인증 구조였어요. 구현이 스펙에서 벗어났다면 모를까요..."
 
-**Dev:** "I followed the architecture doc exactly. The spec didn't account for concurrent session invalidation race conditions."
+**개발자:** "아키텍처 문서를 그대로 따랐습니다. 스펙에서 동시 세션 무효화 경쟁 조건을 고려하지 않았어요."
 
-**PM:** "Both of you missed the bigger issue - we didn't validate session management requirements in the PRD. This is on me for not catching it."
+**PM:** "두 분 다 더 큰 문제를 놓쳤네요. PRD에서 세션 관리 요구사항을 검증하지 않은 겁니다. 제가 잡아냈어야 했는데, 제 잘못입니다."
 
-**TEA:** "And I should've caught this in integration tests. The test scenarios didn't cover concurrent invalidation."
+**TEA:** "저도 통합 테스트에서 잡아야 했어요. 테스트 시나리오에 동시 무효화 케이스가 없었습니다."
 
-### Creative Brainstorming
+### 창의적 브레인스토밍
 
-**You:** "How do we make onboarding feel magical instead of boring?"
+**You:** "온보딩을 지루하지 않고 특별하게 만들려면 어떻게 해야 할까요?"
 
-**UX Designer:** "Start with progressive disclosure - reveal features as users need them, not all at once in a tutorial."
+**UX 디자이너:** "점진적 공개(progressive disclosure)부터 시작하세요. 한꺼번에 튜토리얼로 쏟아붓지 말고, 필요할 때마다 기능을 보여주는 거예요."
 
-**Storyteller:** "What if onboarding was a story? Each step reveals a character's journey - the user IS the hero."
+**스토리텔러:** "온보딩을 하나의 이야기로 만들면 어떨까요? 각 단계마다 캐릭터의 여정이 드러나고, 사용자 자신이 주인공이 되는 거죠."
 
-**Game Designer:** "Building on that - what if the first 'quest' is actually solving a real user problem? They learn by doing something valuable."
+**게임 디자이너:** "그 아이디어를 발전시켜서, 첫 번째 '퀘스트'가 실제 사용자 문제를 해결하는 과정이라면 어떨까요? 가치 있는 일을 하면서 자연스럽게 배우는 거예요."
 
-### Technical Decision
+### 기술적 의사결정
 
-**You:** "Monolith or microservices for MVP?"
+**You:** "MVP에 모놀리스와 마이크로서비스 중 어느 것이 맞을까요?"
 
-**Architect:** "Start monolith. Microservices add complexity you don't need at 1000 users."
+**아키텍트:** "모놀리스로 시작하세요. 마이크로서비스는 사용자 1,000명 규모에서는 필요 없는 복잡성을 더합니다."
 
-**PM:** "Agree. Time to market matters more than theoretical scalability."
+**PM:** "동의합니다. 이론적인 확장성보다 출시 속도가 더 중요합니다."
 
-**Dev:** "Monolith with clear module boundaries. We can extract services later if needed."
+**개발자:** "명확한 모듈 경계를 갖춘 모놀리스로 가죠. 필요하면 나중에 서비스를 분리할 수 있습니다."
 
-:::tip[Better Decisions]
-Better decisions through diverse perspectives. Welcome to party mode.
+:::tip[더 나은 결정]
+다양한 관점으로 더 나은 결정을 내리세요. 파티 모드에 오신 것을 환영합니다.
 :::

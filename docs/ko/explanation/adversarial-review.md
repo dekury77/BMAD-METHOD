@@ -1,59 +1,59 @@
 ---
-title: "Adversarial Review"
-description: Forced reasoning technique that prevents lazy "looks good" reviews
+title: "적대적 리뷰"
+description: 형식적인 '이상 없음' 리뷰를 방지하는 강제 추론 기법
 sidebar:
   order: 5
 ---
 
-Force deeper analysis by requiring problems to be found.
+문제를 반드시 찾아내도록 요구함으로써 더 깊은 분석을 이끌어냅니다.
 
-## What is Adversarial Review?
+## 적대적 리뷰란?
 
-A review technique where the reviewer *must* find issues. No "looks good" allowed. The reviewer adopts a cynical stance - assume problems exist and find them.
+리뷰어가 *반드시* 문제를 찾아야 하는 리뷰 기법입니다. "이상 없어 보인다"는 답은 허용되지 않습니다. 리뷰어는 냉소적인 태도를 취하며, 문제가 존재한다고 가정하고 그것을 찾아냅니다.
 
-This isn't about being negative. It's about forcing genuine analysis instead of a cursory glance that rubber-stamps whatever was submitted.
+부정적인 시각을 강요하는 것이 아닙니다. 제출된 결과물을 형식적으로 승인하는 대신 진정한 분석을 강제하는 방법입니다.
 
-**The core rule:** You must find issues. Zero findings triggers a halt - re-analyze or explain why.
+**핵심 규칙:** 반드시 문제를 찾아야 합니다. 발견 사항이 없으면 중단하고 재분석하거나 이유를 설명해야 합니다.
 
-## Why It Works
+## 왜 효과적인가?
 
-Normal reviews suffer from confirmation bias. You skim the work, nothing jumps out, you approve it. The "find problems" mandate breaks this pattern:
+일반적인 리뷰는 확증 편향에 취약합니다. 결과물을 훑어보고 눈에 띄는 것이 없으면 승인해버립니다. "문제를 찾아라"는 지시가 이 패턴을 깨뜨립니다.
 
-- **Forces thoroughness** - Can't approve until you've looked hard enough to find issues
-- **Catches missing things** - "What's not here?" becomes a natural question
-- **Improves signal quality** - Findings are specific and actionable, not vague concerns
-- **Information asymmetry** - Run reviews with fresh context (no access to original reasoning) so you evaluate the artifact, not the intent
+- **철저함 강제** - 문제를 발견할 만큼 충분히 살펴보기 전까지 승인 불가
+- **누락된 항목 발견** - "여기서 빠진 것은 무엇인가?"가 자연스러운 질문이 됨
+- **신호 품질 향상** - 발견 사항이 구체적이고 실행 가능하며, 막연한 우려가 아님
+- **정보 비대칭 활용** - 원래 추론에 접근하지 않은 새로운 컨텍스트로 리뷰를 실행하여 의도가 아닌 결과물 자체를 평가
 
-## Where It's Used
+## 어디에 사용되나요?
 
-Adversarial review appears throughout BMad workflows - code review, implementation readiness checks, spec validation, and others. Sometimes it's a required step, sometimes optional (like advanced elicitation or party mode). The pattern adapts to whatever artifact needs scrutiny.
+적대적 리뷰는 BMad 워크플로우 전반에 걸쳐 등장합니다. 코드 리뷰, 구현 준비도 검사, 명세 검증 등에 활용됩니다. 필수 단계인 경우도 있고, 고급 요구사항 끌어내기나 파티 모드처럼 선택적인 경우도 있습니다. 검토가 필요한 결과물의 종류에 따라 패턴이 유연하게 적용됩니다.
 
-## Human Filtering Required
+## 사람의 필터링이 필요합니다
 
-Because the AI is *instructed* to find problems, it will find problems - even when they don't exist. Expect false positives: nitpicks dressed as issues, misunderstandings of intent, or outright hallucinated concerns.
+AI는 문제를 찾도록 *지시*받기 때문에 문제를 찾아냅니다. 실제로 존재하지 않는 문제도 마찬가지입니다. 거짓 양성(false positive)을 예상해야 합니다. 사소한 지적이 중요한 문제처럼 포장되거나, 의도를 오해하거나, 완전히 허구의 우려가 나올 수 있습니다.
 
-**You decide what's real.** Review each finding, dismiss the noise, fix what matters.
+**무엇이 실제 문제인지는 직접 판단해야 합니다.** 각 발견 사항을 검토하고, 노이즈는 무시하고, 실제로 중요한 것을 수정하세요.
 
-## Example
+## 예시
 
-Instead of:
+일반 리뷰:
 
-> "The authentication implementation looks reasonable. Approved."
+> "인증 구현이 합리적으로 보입니다. 승인합니다."
 
-An adversarial review produces:
+적대적 리뷰:
 
-> 1. **HIGH** - `login.ts:47` - No rate limiting on failed attempts
-> 2. **HIGH** - Session token stored in localStorage (XSS vulnerable)
-> 3. **MEDIUM** - Password validation happens client-side only
-> 4. **MEDIUM** - No audit logging for failed login attempts
-> 5. **LOW** - Magic number `3600` should be `SESSION_TIMEOUT_SECONDS`
+> 1. **HIGH** - `login.ts:47` - 실패한 시도에 대한 속도 제한 없음
+> 2. **HIGH** - 세션 토큰이 localStorage에 저장됨 (XSS 취약)
+> 3. **MEDIUM** - 비밀번호 검증이 클라이언트 측에서만 수행됨
+> 4. **MEDIUM** - 로그인 실패 시도에 대한 감사 로깅 없음
+> 5. **LOW** - 매직 넘버 `3600`을 `SESSION_TIMEOUT_SECONDS`로 교체해야 함
 
-The first review might miss a security vulnerability. The second caught four.
+일반 리뷰에서는 보안 취약점을 놓쳤을 수 있습니다. 적대적 리뷰는 네 가지를 발견했습니다.
 
-## Iteration and Diminishing Returns
+## 반복과 한계 수익 감소
 
-After addressing findings, consider running it again. A second pass usually catches more. A third isn't always useless either. But each pass takes time, and eventually you hit diminishing returns - just nitpicks and false findings.
+발견 사항을 해결한 후 다시 실행하는 것을 고려해보세요. 2차 검토에서는 보통 더 많은 것을 발견합니다. 3차도 항상 무의미하지는 않습니다. 하지만 매 검토마다 시간이 걸리고, 결국 한계 수익이 감소하는 지점에 도달합니다. 사소한 지적과 거짓 발견만 남게 됩니다.
 
-:::tip[Better Reviews]
-Assume problems exist. Look for what's missing, not just what's wrong.
+:::tip[더 나은 리뷰를 위해]
+문제가 존재한다고 가정하세요. 잘못된 것뿐만 아니라 빠진 것을 찾으세요.
 :::

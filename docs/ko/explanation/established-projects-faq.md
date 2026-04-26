@@ -1,50 +1,50 @@
 ---
-title: "Established Projects FAQ"
-description: Common questions about using BMad Method on established projects
+title: "기존 프로젝트 FAQ"
+description: BMad Method를 기존 프로젝트에 사용할 때 자주 묻는 질문들
 sidebar:
   order: 8
 ---
-Quick answers to common questions about working on established projects with the BMad Method (BMM).
+BMad Method(BMM)로 기존 프로젝트 작업 시 자주 묻는 질문에 대한 빠른 답변입니다.
 
-## Questions
+## 질문
 
-- [Do I have to run document-project first?](#do-i-have-to-run-document-project-first)
-- [What if I forget to run document-project?](#what-if-i-forget-to-run-document-project)
-- [Can I use Quick Flow for established projects?](#can-i-use-quick-flow-for-established-projects)
-- [What if my existing code doesn't follow best practices?](#what-if-my-existing-code-doesnt-follow-best-practices)
+- [document-project를 먼저 실행해야 하나요?](#document-project를-먼저-실행해야-하나요)
+- [document-project 실행을 잊어버렸다면?](#document-project-실행을-잊어버렸다면)
+- [기존 프로젝트에 Quick Flow를 사용할 수 있나요?](#기존-프로젝트에-quick-flow를-사용할-수-있나요)
+- [기존 코드가 모범 사례를 따르지 않는다면?](#기존-코드가-모범-사례를-따르지-않는다면)
 
-### Do I have to run document-project first?
+### document-project를 먼저 실행해야 하나요?
 
-Highly recommended, especially if:
+특히 다음의 경우에는 강력히 권장합니다.
 
-- No existing documentation
-- Documentation is outdated
-- AI agents need context about existing code
+- 기존 문서가 없는 경우
+- 문서가 오래된 경우
+- AI 에이전트가 기존 코드에 대한 컨텍스트가 필요한 경우
 
-You can skip it if you have comprehensive, up-to-date documentation including `docs/index.md` or will use other tools or techniques to aid in discovery for the agent to build on an existing system.
+`docs/index.md`를 포함하여 포괄적이고 최신 문서가 있다면, 또는 에이전트가 기존 시스템 위에 작업할 수 있도록 발견을 도울 다른 도구나 기법을 사용할 예정이라면 건너뛸 수 있습니다.
 
-### What if I forget to run document-project?
+### document-project 실행을 잊어버렸다면?
 
-Don't worry about it - you can do it at any time. You can even do it during or after a project to help keep docs up to date.
+걱정하지 마세요. 언제든 실행할 수 있습니다. 프로젝트 진행 중이나 완료 후에도 문서를 최신 상태로 유지하는 데 활용할 수 있습니다.
 
-### Can I use Quick Flow for established projects?
+### 기존 프로젝트에 Quick Flow를 사용할 수 있나요?
 
-Yes! Quick Flow works great for established projects. It will:
+네! Quick Flow는 기존 프로젝트에서도 잘 동작합니다. 다음을 수행합니다.
 
-- Auto-detect your existing stack
-- Analyze existing code patterns
-- Detect conventions and ask for confirmation
-- Generate context-rich spec that respects existing code
+- 기존 스택 자동 감지
+- 기존 코드 패턴 분석
+- 관례 감지 후 확인 요청
+- 기존 코드를 존중하는 컨텍스트가 풍부한 명세 생성
 
-Perfect for bug fixes and small features in existing codebases.
+기존 코드베이스의 버그 수정과 소규모 기능 추가에 적합합니다.
 
-### What if my existing code doesn't follow best practices?
+### 기존 코드가 모범 사례를 따르지 않는다면?
 
-Quick Flow detects your conventions and asks: "Should I follow these existing conventions?" You decide:
+Quick Flow가 관례를 감지하고 묻습니다. "기존 관례를 따를까요?" 직접 결정하면 됩니다.
 
-- **Yes** → Maintain consistency with current codebase
-- **No** → Establish new standards (document why in spec)
+- **Yes** → 현재 코드베이스와 일관성 유지
+- **No** → 새로운 기준 수립 (명세서에 이유 문서화)
 
-BMM respects your choice — it won't force modernization, but it will offer it.
+BMM은 여러분의 선택을 존중합니다. 현대화를 강요하지 않지만 제안은 합니다.
 
-**Have a question not answered here?** Please [open an issue](https://github.com/bmad-code-org/BMAD-METHOD/issues) or ask in [Discord](https://discord.gg/gk8jAdXWmj) so we can add it!
+**여기서 답을 찾지 못했나요?** [이슈를 열거나](https://github.com/bmad-code-org/BMAD-METHOD/issues) [Discord](https://discord.gg/gk8jAdXWmj)에서 질문해 주세요. 추가하겠습니다!

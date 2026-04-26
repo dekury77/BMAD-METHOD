@@ -1,293 +1,293 @@
 ---
-title: Core Tools
-description: Reference for all built-in tasks and workflows available in every BMad installation without additional modules.
+title: 핵심 도구
+description: 추가 모듈 없이 모든 BMad 설치에서 사용할 수 있는 내장 태스크 및 워크플로우 참고자료
 sidebar:
   order: 2
 ---
 
-Every BMad installation includes a set of core skills that can be used in conjunction with any anything you are doing — standalone tasks and workflows that work across all projects, all modules, and all phases. These are always available regardless of which optional modules you install.
+모든 BMad 설치에는 현재 작업과 함께 사용할 수 있는 핵심 스킬 세트가 포함됩니다. 모든 프로젝트, 모든 모듈, 모든 단계에서 작동하는 독립 태스크와 워크플로우로, 어떤 선택적 모듈을 설치하더라도 항상 사용할 수 있습니다.
 
-:::tip[Quick Path]
-Run any core tool by typing its skill name (e.g., `bmad-help`) in your IDE. No agent session required.
+:::tip[빠른 실행]
+IDE에서 스킬 이름(예: `bmad-help`)을 입력하면 핵심 도구를 바로 실행할 수 있습니다. 에이전트 세션이 필요하지 않습니다.
 :::
 
-## Overview
+## 개요
 
-| Tool | Type | Purpose |
+| 도구 | 유형 | 목적 |
 | --- | --- | --- |
-| [`bmad-help`](#bmad-help) | Task | Get context-aware guidance on what to do next |
-| [`bmad-brainstorming`](#bmad-brainstorming) | Workflow | Facilitate interactive brainstorming sessions |
-| [`bmad-party-mode`](#bmad-party-mode) | Workflow | Orchestrate multi-agent group discussions |
-| [`bmad-distillator`](#bmad-distillator) | Task | Lossless LLM-optimized compression of documents |
-| [`bmad-advanced-elicitation`](#bmad-advanced-elicitation) | Task | Push LLM output through iterative refinement methods |
-| [`bmad-review-adversarial-general`](#bmad-review-adversarial-general) | Task | Cynical review that finds what's missing and what's wrong |
-| [`bmad-review-edge-case-hunter`](#bmad-review-edge-case-hunter) | Task | Exhaustive branching-path analysis for unhandled edge cases |
-| [`bmad-editorial-review-prose`](#bmad-editorial-review-prose) | Task | Clinical copy-editing for communication clarity |
-| [`bmad-editorial-review-structure`](#bmad-editorial-review-structure) | Task | Structural editing — cuts, merges, and reorganization |
-| [`bmad-shard-doc`](#bmad-shard-doc) | Task | Split large markdown files into organized sections |
-| [`bmad-index-docs`](#bmad-index-docs) | Task | Generate or update an index of all docs in a folder |
+| [`bmad-help`](#bmad-help) | 태스크 | 다음 단계에 대한 컨텍스트 기반 안내 제공 |
+| [`bmad-brainstorming`](#bmad-brainstorming) | 워크플로우 | 인터랙티브 브레인스토밍 세션 진행 |
+| [`bmad-party-mode`](#bmad-party-mode) | 워크플로우 | 멀티 에이전트 그룹 토론 조율 |
+| [`bmad-distillator`](#bmad-distillator) | 태스크 | 문서의 무손실 LLM 최적화 압축 |
+| [`bmad-advanced-elicitation`](#bmad-advanced-elicitation) | 태스크 | 반복적 정제 방법으로 LLM 출력 개선 |
+| [`bmad-review-adversarial-general`](#bmad-review-adversarial-general) | 태스크 | 누락된 부분과 문제점을 찾는 냉소적 리뷰 |
+| [`bmad-review-edge-case-hunter`](#bmad-review-edge-case-hunter) | 태스크 | 처리되지 않은 엣지 케이스를 위한 분기 경로 전수 분석 |
+| [`bmad-editorial-review-prose`](#bmad-editorial-review-prose) | 태스크 | 커뮤니케이션 명확성을 위한 전문적 교정 |
+| [`bmad-editorial-review-structure`](#bmad-editorial-review-structure) | 태스크 | 구조적 편집 — 삭제, 병합, 재구성 |
+| [`bmad-shard-doc`](#bmad-shard-doc) | 태스크 | 대용량 마크다운 파일을 섹션별 파일로 분할 |
+| [`bmad-index-docs`](#bmad-index-docs) | 태스크 | 폴더 내 모든 문서의 인덱스 생성 또는 업데이트 |
 
 ## bmad-help
 
-**Your intelligent guide to what comes next.** — Inspects your project state, detects what's been done, and recommends the next required or optional step.
+**다음에 할 일을 안내하는 지능형 가이드.** — 프로젝트 상태를 분석하고, 완료된 작업을 감지하여, 필수 또는 선택 다음 단계를 추천합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You finished a workflow and want to know what's next
-- You're new to BMad and need orientation
-- You're stuck and want context-aware advice
-- You installed new modules and want to see what's available
+- 워크플로우를 완료하고 다음 단계를 알고 싶을 때
+- BMad가 처음이고 방향을 잡고 싶을 때
+- 막혔을 때 컨텍스트 기반 조언이 필요할 때
+- 새 모듈을 설치하고 사용 가능한 기능을 확인하고 싶을 때
 
-**How it works:**
+**동작 방식:**
 
-1. Scans your project for existing artifacts (PRD, architecture, stories, etc.)
-2. Detects which modules are installed and their available workflows
-3. Recommends next steps in priority order — required steps first, then optional
-4. Presents each recommendation with the skill command and a brief description
+1. 프로젝트에서 기존 산출물(PRD, 아키텍처, 스토리 등) 스캔
+2. 설치된 모듈과 사용 가능한 워크플로우 감지
+3. 필수 단계 우선, 그 다음 선택 단계 순으로 추천
+4. 각 추천에 스킬 명령어와 간략한 설명 제공
 
-**Input:** Optional query in natural language (e.g., `bmad-help I have a SaaS idea, where do I start?`)
+**입력:** 자연어 쿼리 (선택 사항, 예: `bmad-help I have a SaaS idea, where do I start?`)
 
-**Output:** Prioritized list of recommended next steps with skill commands
+**출력:** 스킬 명령어가 포함된 우선순위별 다음 단계 추천 목록
 
 ## bmad-brainstorming
 
-**Generate diverse ideas through interactive creative techniques.** — A facilitated brainstorming session that loads proven ideation methods from a technique library and guides you toward 100+ ideas before organizing.
+**인터랙티브 창의적 기법으로 다양한 아이디어 생성.** — 검증된 아이데이션 방법을 기법 라이브러리에서 불러와 아이디어 100개 이상을 생성한 후 정리하도록 안내하는 브레인스토밍 세션입니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You're starting a new project and need to explore the problem space
-- You're stuck generating ideas and need structured creativity
-- You want to use proven ideation frameworks (SCAMPER, reverse brainstorming, etc.)
+- 새 프로젝트를 시작하고 문제 영역을 탐색해야 할 때
+- 아이디어 생성이 막혀 구조화된 창의성이 필요할 때
+- 검증된 아이데이션 프레임워크(SCAMPER, 역 브레인스토밍 등)를 활용하고 싶을 때
 
-**How it works:**
+**동작 방식:**
 
-1. Sets up a brainstorming session with your topic
-2. Loads creative techniques from a method library
-3. Guides you through technique after technique, generating ideas
-4. Applies anti-bias protocol — shifts creative domain every 10 ideas to prevent clustering
-5. Produces an append-only session document with all ideas organized by technique
+1. 주제로 브레인스토밍 세션 설정
+2. 방법 라이브러리에서 창의적 기법 불러오기
+3. 기법을 차례로 적용하며 아이디어 생성 안내
+4. 편향 방지 프로토콜 적용 — 아이디어 10개마다 창의 영역을 전환하여 집단화 방지
+5. 기법별로 정리된 모든 아이디어가 담긴 추가 전용 세션 문서 생성
 
-**Input:** Brainstorming topic or problem statement, optional context file
+**입력:** 브레인스토밍 주제 또는 문제 설명, 선택적 컨텍스트 파일
 
-**Output:** `brainstorming-session-{date}.md` with all generated ideas
+**출력:** 생성된 모든 아이디어가 담긴 `brainstorming-session-{date}.md`
 
-:::note[Quantity Target]
-The magic happens in ideas 50–100. The workflow encourages generating 100+ ideas before organization.
+:::note[수량 목표]
+마법은 아이디어 50~100번째에서 일어납니다. 워크플로우는 정리 전에 100개 이상의 아이디어 생성을 권장합니다.
 :::
 
 ## bmad-party-mode
 
-**Orchestrate multi-agent group discussions.** — Loads all installed BMad agents and facilitates a natural conversation where each agent contributes from their unique expertise and personality.
+**멀티 에이전트 그룹 토론 조율.** — 설치된 모든 BMad 에이전트를 불러와 각 에이전트가 고유한 전문성과 성격으로 자연스럽게 대화에 참여하는 토론을 진행합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You need multiple expert perspectives on a decision
-- You want agents to challenge each other's assumptions
-- You're exploring a complex topic that spans multiple domains
+- 의사결정에 여러 전문가 관점이 필요할 때
+- 에이전트들이 서로의 가정에 의문을 제기하길 원할 때
+- 여러 도메인에 걸친 복잡한 주제를 탐구할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Loads the agent manifest with all installed agent personalities
-2. Analyzes your topic to select 2–3 most relevant agents
-3. Agents take turns contributing, with natural cross-talk and disagreements
-4. Rotates agent participation to ensure diverse perspectives over time
-5. Exit with `goodbye`, `end party`, or `quit`
+1. 설치된 모든 에이전트 페르소나가 담긴 에이전트 매니페스트 불러오기
+2. 주제를 분석하여 가장 관련성 높은 에이전트 2~3명 선택
+3. 에이전트가 교차 대화와 의견 불일치를 포함하여 번갈아 기여
+4. 시간이 지남에 따라 다양한 관점을 보장하도록 에이전트 참여 순환
+5. `goodbye`, `end party`, `quit`으로 종료
 
-**Input:** Discussion topic or question, along with specification of personas you would like to participate (optional)
+**입력:** 토론 주제 또는 질문, 참여를 원하는 페르소나 지정 (선택 사항)
 
-**Output:** Real-time multi-agent conversation with maintained agent personalities
+**출력:** 에이전트 성격이 유지된 실시간 멀티 에이전트 대화
 
 ## bmad-distillator
 
-**Lossless LLM-optimized compression of source documents.** — Produces dense, token-efficient distillates that preserve all information for downstream LLM consumption. Verifiable through round-trip reconstruction.
+**소스 문서의 무손실 LLM 최적화 압축.** — 하위 LLM이 소비하기 위한 모든 정보를 보존하는 밀도 높고 토큰 효율적인 증류본을 생성합니다. 역방향 재구성을 통해 검증 가능합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- A document is too large for an LLM's context window
-- You need token-efficient versions of research, specs, or planning artifacts
-- You want to verify no information is lost during compression
-- Agents will need to frequently reference and find information in it
+- 문서가 LLM 컨텍스트 윈도우에 비해 너무 클 때
+- 리서치, 명세, 계획 산출물의 토큰 효율적인 버전이 필요할 때
+- 압축 중 정보 손실이 없는지 검증하고 싶을 때
+- 에이전트가 자주 참조하고 정보를 찾아야 하는 문서일 때
 
-**How it works:**
+**동작 방식:**
 
-1. **Analyze** — Reads source documents, identifies information density and structure
-2. **Compress** — Converts prose to dense bullet-point format, strips decorative formatting
-3. **Verify** — Checks completeness to ensure all original information is preserved
-4. **Validate** (optional) — Round-trip reconstruction test proves lossless compression
+1. **분석** — 소스 문서를 읽고 정보 밀도와 구조 파악
+2. **압축** — 산문을 밀도 높은 불릿 포인트 형식으로 변환, 장식적 서식 제거
+3. **검증** — 모든 원본 정보가 보존되었는지 완전성 확인
+4. **유효성 검사** (선택 사항) — 역방향 재구성 테스트로 무손실 압축 증명
 
-**Input:**
+**입력:**
 
-- `source_documents` (required) — File paths, folder paths, or glob patterns
-- `downstream_consumer` (optional) — What consumes this (e.g., "PRD creation")
-- `token_budget` (optional) — Approximate target size
-- `--validate` (flag) — Run round-trip reconstruction test
+- `source_documents` (필수) — 파일 경로, 폴더 경로, 또는 글로브 패턴
+- `downstream_consumer` (선택 사항) — 이 문서를 사용하는 대상 (예: "PRD creation")
+- `token_budget` (선택 사항) — 대략적인 목표 크기
+- `--validate` (옵션) — 역방향 재구성 테스트 실행
 
-**Output:** Distillate markdown file(s) with compression ratio report (e.g., "3.2:1")
+**출력:** 압축 비율 보고서(예: "3.2:1")가 포함된 증류본 마크다운 파일
 
 ## bmad-advanced-elicitation
 
-**Push LLM output through iterative refinement methods.** — Selects from a library of elicitation techniques to systematically improve content through multiple passes.
+**반복적 정제 방법으로 LLM 출력 개선.** — 요구사항 끌어내기 기법 라이브러리에서 선택하여 여러 패스를 통해 콘텐츠를 체계적으로 개선합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- LLM output feels shallow or generic
-- You want to explore a topic from multiple analytical angles
-- You're refining a critical document and want deeper thinking
+- LLM 출력이 얕거나 일반적으로 느껴질 때
+- 여러 분석적 관점에서 주제를 탐구하고 싶을 때
+- 중요한 문서를 정제하며 더 깊은 사고를 원할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Loads method registry with 5+ elicitation techniques
-2. Selects 5 best-fit methods based on content type and complexity
-3. Presents an interactive menu — pick a method, reshuffle, or list all
-4. Applies the selected method to enhance the content
-5. Re-presents options for iterative improvement until you select "Proceed"
+1. 5개 이상의 고급 요구사항 끌어내기 기법이 담긴 방법 레지스트리 불러오기
+2. 콘텐츠 유형과 복잡도에 따라 최적의 방법 5개 선택
+3. 인터랙티브 메뉴 제시 — 방법 선택, 셔플, 또는 전체 목록 확인
+4. 선택한 방법을 적용하여 콘텐츠 개선
+5. "Proceed"를 선택할 때까지 반복 개선을 위해 옵션 재제시
 
-**Input:** Content section to enhance
+**입력:** 개선할 콘텐츠 섹션
 
-**Output:** Enhanced version of the content with improvements applied
+**출력:** 개선 사항이 적용된 향상된 콘텐츠 버전
 
 ## bmad-review-adversarial-general
 
-**Cynical review that assumes problems exist and searches for them.** — Takes a skeptical, jaded reviewer perspective with zero patience for sloppy work. Looks for what's missing, not just what's wrong.
+**문제가 있다고 가정하고 찾아내는 냉소적 리뷰.** — 허술한 작업에 인내심이 없는 회의적인 리뷰어 관점을 취합니다. 잘못된 부분만이 아니라 누락된 부분을 찾습니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You need quality assurance before finalizing a deliverable
-- You want to stress-test a spec, story, or document
-- You want to find gaps in coverage that optimistic reviews miss
+- 결과물을 최종화하기 전에 품질 보증이 필요할 때
+- 명세, 스토리, 문서를 스트레스 테스트하고 싶을 때
+- 낙관적인 리뷰가 놓치는 커버리지 공백을 찾고 싶을 때
 
-**How it works:**
+**동작 방식:**
 
-1. Reads the content with a cynical, critical perspective
-2. Identifies issues across completeness, correctness, and quality
-3. Searches specifically for what's missing — not just what's present and wrong
-4. Must find a minimum of 10 issues or re-analyzes deeper
+1. 냉소적이고 비판적인 관점으로 콘텐츠 읽기
+2. 완전성, 정확성, 품질 전반에 걸친 문제 식별
+3. 특히 누락된 부분 탐색 — 존재하고 잘못된 부분만이 아닌
+4. 최소 10개의 문제를 찾지 못하면 더 깊이 재분석
 
-**Input:**
+**입력:**
 
-- `content` (required) — Diff, spec, story, doc, or any artifact
-- `also_consider` (optional) — Additional areas to keep in mind
+- `content` (필수) — 차이, 명세, 스토리, 문서, 또는 모든 산출물
+- `also_consider` (선택 사항) — 추가로 고려할 영역
 
-**Output:** Markdown list of 10+ findings with descriptions
+**출력:** 설명이 포함된 10개 이상의 발견 사항 마크다운 목록
 
 ## bmad-review-edge-case-hunter
 
-**Walk every branching path and boundary condition, report only unhandled cases.** — Pure path-tracing methodology that mechanically derives edge classes. Orthogonal to adversarial review — method-driven, not attitude-driven.
+**모든 분기 경로와 경계 조건을 추적하여 처리되지 않은 케이스만 보고.** — 엣지 클래스를 기계적으로 도출하는 순수 경로 추적 방법론입니다. 적대적 리뷰와 직교적 — 태도 기반이 아닌 방법 기반입니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You want exhaustive edge case coverage for code or logic
-- You need a complement to adversarial review (different methodology, different findings)
-- You're reviewing a diff or function for boundary conditions
+- 코드나 로직에 대한 철저한 엣지 케이스 커버리지가 필요할 때
+- 적대적 리뷰의 보완이 필요할 때 (다른 방법론, 다른 발견 사항)
+- 차이나 함수의 경계 조건을 리뷰할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Enumerates all branching paths in the content
-2. Derives edge classes mechanically: missing else/default, unguarded inputs, off-by-one, arithmetic overflow, implicit type coercion, race conditions, timeout gaps
-3. Tests each path against existing guards
-4. Reports only unhandled paths — silently discards handled ones
+1. 콘텐츠의 모든 분기 경로 열거
+2. 기계적으로 엣지 클래스 도출: 누락된 else/default, 보호되지 않은 입력, 경계값 오류, 산술 오버플로우, 암묵적 타입 강제, 경쟁 조건, 타임아웃 공백
+3. 각 경로를 기존 가드에 대해 테스트
+4. 처리되지 않은 경로만 보고 — 처리된 경로는 자동으로 제외
 
-**Input:**
+**입력:**
 
-- `content` (required) — Diff, full file, or function
-- `also_consider` (optional) — Additional areas to keep in mind
+- `content` (필수) — 차이, 전체 파일, 또는 함수
+- `also_consider` (선택 사항) — 추가로 고려할 영역
 
-**Output:** JSON array of findings, each with `location`, `trigger_condition`, `guard_snippet`, and `potential_consequence`
+**출력:** `location`, `trigger_condition`, `guard_snippet`, `potential_consequence`를 포함한 발견 사항의 JSON 배열
 
-:::note[Complementary Reviews]
-Run both `bmad-review-adversarial-general` and `bmad-review-edge-case-hunter` together for orthogonal coverage. The adversarial review catches quality and completeness issues; the edge case hunter catches unhandled paths.
+:::note[보완적 리뷰]
+직교적 커버리지를 위해 `bmad-review-adversarial-general`과 `bmad-review-edge-case-hunter`를 함께 실행하세요. 적대적 리뷰는 품질과 완전성 문제를 잡아내고, 엣지 케이스 헌터는 처리되지 않은 경로를 찾아냅니다.
 :::
 
 ## bmad-editorial-review-prose
 
-**Clinical copy-editing focused on communication clarity.** — Reviews text for issues that impede comprehension. Applies Microsoft Writing Style Guide baseline. Preserves author voice.
+**커뮤니케이션 명확성에 집중한 전문적 교정.** — 이해를 방해하는 문제를 찾아 텍스트를 검토합니다. Microsoft Writing Style Guide를 기준으로 적용합니다. 저자의 목소리를 보존합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You've drafted a document and want to polish the writing
-- You need to ensure clarity for a specific audience
-- You want communication fixes without style opinion changes
+- 문서 초안을 작성하고 글쓰기를 다듬고 싶을 때
+- 특정 독자를 위한 명확성을 확보해야 할 때
+- 스타일 의견 변경 없이 커뮤니케이션 수정만 원할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Reads the content, skipping code blocks and frontmatter
-2. Identifies communication issues (not style preferences)
-3. Deduplicates same issues across multiple locations
-4. Produces a three-column fix table
+1. 코드 블록과 frontmatter를 건너뛰며 콘텐츠 읽기
+2. 커뮤니케이션 문제 식별 (스타일 선호도가 아닌)
+3. 여러 위치에 걸친 동일 문제 중복 제거
+4. 3열 수정 표 생성
 
-**Input:**
+**입력:**
 
-- `content` (required) — Markdown, plain text, or XML
-- `style_guide` (optional) — Project-specific style guide
-- `reader_type` (optional) — `humans` (default) for clarity/flow, or `llm` for precision/consistency
+- `content` (필수) — 마크다운, 일반 텍스트, 또는 XML
+- `style_guide` (선택 사항) — 프로젝트별 스타일 가이드
+- `reader_type` (선택 사항) — 명확성/흐름을 위한 `humans` (기본값), 또는 정밀성/일관성을 위한 `llm`
 
-**Output:** Three-column markdown table: Original Text | Revised Text | Changes
+**출력:** 원본 텍스트 | 수정된 텍스트 | 변경 사항으로 구성된 3열 마크다운 표
 
 ## bmad-editorial-review-structure
 
-**Structural editing — proposes cuts, merges, moves, and condensing.** — Reviews document organization and proposes substantive changes to improve clarity and flow before copy editing.
+**구조적 편집 — 삭제, 병합, 이동, 압축 제안.** — 교정 전에 명확성과 흐름을 개선하기 위해 문서 구성을 검토하고 실질적인 변경을 제안합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- A document was produced from multiple subprocesses and needs structural coherence
-- You want to reduce document length while preserving comprehension
-- You need to identify scope violations or buried critical information
+- 여러 하위 프로세스에서 생성된 문서에 구조적 일관성이 필요할 때
+- 이해도를 유지하면서 문서 길이를 줄이고 싶을 때
+- 범위 위반이나 중요 정보가 묻혀 있는지 확인이 필요할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Analyzes document against 5 structure models (Tutorial, Reference, Explanation, Prompt, Strategic)
-2. Identifies redundancies, scope violations, and buried information
-3. Produces prioritized recommendations: CUT, MERGE, MOVE, CONDENSE, QUESTION, PRESERVE
-4. Estimates total reduction in words and percentage
+1. 5가지 구조 모델(Tutorial, Reference, Explanation, Prompt, Strategic)에 대해 문서 분석
+2. 중복, 범위 위반, 묻혀 있는 정보 식별
+3. 우선순위별 추천 생성: CUT, MERGE, MOVE, CONDENSE, QUESTION, PRESERVE
+4. 총 단어 감소량과 비율 추정
 
-**Input:**
+**입력:**
 
-- `content` (required) — Document to review
-- `purpose` (optional) — Intended purpose (e.g., "quickstart tutorial")
-- `target_audience` (optional) — Who reads this
-- `reader_type` (optional) — `humans` or `llm`
-- `length_target` (optional) — Target reduction (e.g., "30% shorter")
+- `content` (필수) — 검토할 문서
+- `purpose` (선택 사항) — 의도된 목적 (예: "quickstart tutorial")
+- `target_audience` (선택 사항) — 독자층
+- `reader_type` (선택 사항) — `humans` 또는 `llm`
+- `length_target` (선택 사항) — 목표 감소량 (예: "30% shorter")
 
-**Output:** Document summary, prioritized recommendation list, and estimated reduction
+**출력:** 문서 요약, 우선순위별 추천 목록, 예상 감소량
 
 ## bmad-shard-doc
 
-**Split large markdown files into organized section files.** — Uses level-2 headers as split points to create a folder of self-contained section files with an index.
+**대용량 마크다운 파일을 정리된 섹션 파일로 분할.** — 레벨 2 헤더를 분할 지점으로 사용하여 인덱스가 있는 자체 완결형 섹션 파일 폴더를 생성합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- A markdown document has grown too large to manage effectively (500+ lines)
-- You want to break a monolithic doc into navigable sections
-- You need separate files for parallel editing or LLM context management
+- 마크다운 문서가 효율적으로 관리하기에 너무 커졌을 때 (500줄 이상)
+- 단일 문서를 탐색 가능한 섹션으로 나누고 싶을 때
+- 병렬 편집이나 LLM 컨텍스트 관리를 위해 별도 파일이 필요할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Validates the source file exists and is markdown
-2. Splits on level-2 (`##`) headers into numbered section files
-3. Creates an `index.md` with section manifest and links
-4. Prompts you to delete, archive, or keep the original
+1. 소스 파일 존재 여부 및 마크다운 형식 확인
+2. 레벨 2 (`##`) 헤더를 기준으로 번호가 매겨진 섹션 파일로 분할
+3. 섹션 매니페스트와 링크가 담긴 `index.md` 생성
+4. 원본 파일 삭제, 보관, 또는 유지 여부 확인
 
-**Input:** Source markdown file path, optional destination folder
+**입력:** 소스 마크다운 파일 경로, 선택적 대상 폴더
 
-**Output:** Folder with `index.md` and `01-{section}.md`, `02-{section}.md`, etc.
+**출력:** `index.md`와 `01-{section}.md`, `02-{section}.md` 등이 담긴 폴더
 
 ## bmad-index-docs
 
-**Generate or update an index of all documents in a folder.** — Scans a directory, reads each file to understand its purpose, and produces an organized `index.md` with links and descriptions.
+**폴더 내 모든 문서의 인덱스 생성 또는 업데이트.** — 디렉터리를 스캔하고, 각 파일을 읽어 목적을 파악한 후, 링크와 설명이 포함된 정리된 `index.md`를 생성합니다.
 
-**Use it when:**
+**사용 시점:**
 
-- You need a lightweight index for quick LLM scanning of available docs
-- A documentation folder has grown and needs an organized table of contents
-- You want an auto-generated overview that stays current
+- LLM이 사용 가능한 문서를 빠르게 스캔할 수 있는 경량 인덱스가 필요할 때
+- 문서 폴더가 커져 정리된 목차가 필요할 때
+- 최신 상태를 유지하는 자동 생성 개요가 필요할 때
 
-**How it works:**
+**동작 방식:**
 
-1. Scans the target directory for all non-hidden files
-2. Reads each file to understand its actual purpose
-3. Groups files by type, purpose, or subdirectory
-4. Generates concise descriptions (3–10 words each)
+1. 숨겨진 파일을 제외하고 대상 디렉터리의 모든 파일 스캔
+2. 각 파일을 읽어 실제 목적 파악
+3. 유형, 목적, 또는 하위 디렉터리별로 파일 그룹화
+4. 간결한 설명 생성 (각 3~10단어)
 
-**Input:** Target folder path
+**입력:** 대상 폴더 경로
 
-**Output:** `index.md` with organized file listings, relative links, and brief descriptions
+**출력:** 정리된 파일 목록, 상대 링크, 간략한 설명이 담긴 `index.md`

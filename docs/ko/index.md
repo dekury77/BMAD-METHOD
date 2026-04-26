@@ -1,60 +1,60 @@
 ---
-title: Welcome to the BMad Method
-description: AI-driven development framework with specialized agents, guided workflows, and intelligent planning
+title: BMad Method에 오신 것을 환영합니다
+description: 특화된 에이전트, 안내형 워크플로우, 지능형 계획 수립을 갖춘 AI 기반 개발 프레임워크
 ---
 
-The BMad Method (**B**uild **M**ore **A**rchitect **D**reams) is an AI-driven development framework module within the BMad Method Ecosystem that helps you build software through the whole process from ideation and planning all the way through agentic implementation. It provides specialized AI agents, guided workflows, and intelligent planning that adapts to your project's complexity, whether you're fixing a bug or building an enterprise platform.
+BMad Method (**B**uild **M**ore **A**rchitect **D**reams)는 아이데이션과 기획부터 에이전틱 구현까지 소프트웨어 개발의 전 과정을 지원하는 AI 기반 개발 프레임워크 모듈입니다. 버그 수정부터 엔터프라이즈 플랫폼 구축까지, 프로젝트의 복잡도에 맞게 적응하는 특화된 AI 에이전트, 안내형 워크플로우, 지능형 계획 수립 기능을 제공합니다.
 
-If you're comfortable working with AI coding assistants like Claude, Cursor, or GitHub Copilot, you're ready to get started.
+Claude, Cursor, GitHub Copilot 같은 AI 코딩 어시스턴트를 편하게 사용하고 있다면 바로 시작할 준비가 된 것입니다.
 
-:::note[🚀 V6 is Here and We're Just Getting Started!]
-Skills Architecture, BMad Builder v1, Dev Loop Automation, and so much more in the works. **[Check out the Roadmap →](/roadmap/)**
+:::note[🚀 V6 출시 — 더 많은 기능이 준비 중!]
+스킬 아키텍처, BMad Builder v1, 개발 루프 자동화, 그 외 수많은 기능이 개발 중입니다. **[로드맵 확인하기 →](/roadmap/)**
 :::
 
-## New Here? Start with a Tutorial
+## 처음 오셨나요? 튜토리얼로 시작하세요
 
-The fastest way to understand BMad is to try it.
+BMad를 가장 빠르게 이해하는 방법은 직접 해보는 것입니다.
 
-- **[Get Started with BMad](./tutorials/getting-started.md)** — Install and understand how BMad works
-- **[Workflow Map](./reference/workflow-map.md)** — Visual overview of BMM phases, workflows, and context management
+- **[BMad 시작하기](./tutorials/getting-started.md)** — BMad 설치 및 작동 원리 이해
+- **[워크플로우 맵](./reference/workflow-map.md)** — BMM 단계, 워크플로우, 컨텍스트 관리 시각적 개요
 
-:::tip[Just Want to Dive In?]
-Install BMad and use the `bmad-help` skill — it will guide you through everything based on your project and installed modules.
+:::tip[바로 시작하고 싶다면?]
+BMad를 설치한 후 `bmad-help` 스킬을 사용하세요. 프로젝트와 설치된 모듈에 맞게 모든 것을 안내해 드립니다.
 :::
 
-## How to Use These Docs
+## 이 문서 활용 방법
 
-These docs are organized into four sections based on what you're trying to do:
+이 문서는 목적에 따라 4가지 섹션으로 구성되어 있습니다:
 
-| Section           | Purpose                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Tutorials**     | Learning-oriented. Step-by-step guides that walk you through building something. Start here if you're new. |
-| **How-To Guides** | Task-oriented. Practical guides for solving specific problems. "How do I customize an agent?" lives here.  |
-| **Explanation**   | Understanding-oriented. Deep dives into concepts and architecture. Read when you want to know *why*.       |
-| **Reference**     | Information-oriented. Technical specifications for agents, workflows, and configuration.                   |
+| 섹션 | 목적 |
+| --- | --- |
+| **튜토리얼** | 학습 중심. 단계별로 무언가를 만들어보는 가이드. 처음이라면 여기서 시작하세요. |
+| **방법 안내** | 작업 중심. 특정 문제 해결을 위한 실용 가이드. "에이전트를 어떻게 커스터마이즈하나요?" 같은 내용이 있습니다. |
+| **개념 설명** | 이해 중심. 개념과 아키텍처에 대한 심층 분석. *왜* 그런지 알고 싶을 때 읽으세요. |
+| **참고자료** | 정보 중심. 에이전트, 워크플로우, 설정에 관한 기술 명세. |
 
-## Expand and Customize
+## 확장 및 커스터마이즈
 
-Want to expand BMad with your own agents, workflows, or modules? The **[BMad Builder](https://bmad-builder-docs.bmad-method.org/)** provides the framework and tools for creating custom extensions, whether you're adding new capabilities to BMad or building entirely new modules from scratch.
+나만의 에이전트, 워크플로우, 모듈로 BMad를 확장하고 싶다면? **[BMad Builder](https://bmad-builder-docs.bmad-method.org/)**가 커스텀 확장 기능 제작을 위한 프레임워크와 도구를 제공합니다. BMad에 새 기능을 추가하거나 완전히 새로운 모듈을 처음부터 만들 수 있습니다.
 
-## What You'll Need
+## 필요한 것
 
-BMad works with any AI coding assistant that supports custom system prompts or project context. Popular options include:
+BMad는 커스텀 시스템 프롬프트 또는 프로젝트 컨텍스트를 지원하는 모든 AI 코딩 어시스턴트와 함께 작동합니다. 많이 사용되는 옵션은 다음과 같습니다:
 
-- **[Claude Code](https://code.claude.com)** — Anthropic's CLI tool (recommended)
-- **[Cursor](https://cursor.sh)** — AI-first code editor
-- **[Codex CLI](https://github.com/openai/codex)** — OpenAI's terminal coding agent
+- **[Claude Code](https://code.claude.com)** — Anthropic의 CLI 도구 (권장)
+- **[Cursor](https://cursor.sh)** — AI 퍼스트 코드 에디터
+- **[Codex CLI](https://github.com/openai/codex)** — OpenAI의 터미널 코딩 에이전트
 
-You should be comfortable with basic software development concepts like version control, project structure, and agile workflows. No prior experience with BMad-style agent systems is required—that's what these docs are for.
+버전 관리, 프로젝트 구조, 애자일 워크플로우 같은 기본적인 소프트웨어 개발 개념에 익숙하면 됩니다. BMad 스타일의 에이전트 시스템 경험은 필요 없습니다. 그것이 바로 이 문서가 있는 이유입니다.
 
-## Join the Community
+## 커뮤니티 참여
 
-Get help, share what you're building, or contribute to BMad:
+도움을 받거나, 만들고 있는 것을 공유하거나, BMad에 기여하세요:
 
-- **[Discord](https://discord.gg/gk8jAdXWmj)** — Chat with other BMad users, ask questions, share ideas
-- **[GitHub](https://github.com/bmad-code-org/BMAD-METHOD)** — Source code, issues, and contributions
-- **[YouTube](https://www.youtube.com/@BMadCode)** — Video tutorials and walkthroughs
+- **[Discord](https://discord.gg/gk8jAdXWmj)** — 다른 BMad 사용자와 채팅, 질문, 아이디어 공유
+- **[GitHub](https://github.com/bmad-code-org/BMAD-METHOD)** — 소스 코드, 이슈, 기여
+- **[YouTube](https://www.youtube.com/@BMadCode)** — 비디오 튜토리얼 및 워크스루
 
-## Next Step
+## 다음 단계
 
-Ready to dive in? **[Get Started with BMad](./tutorials/getting-started.md)** and build your first project.
+시작할 준비가 됐나요? **[BMad 시작하기](./tutorials/getting-started.md)**로 첫 프로젝트를 만들어 보세요.

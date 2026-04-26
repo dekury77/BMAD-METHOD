@@ -1,50 +1,50 @@
 ---
-title: 'Document Sharding Guide'
-description: Split large markdown files into smaller organized files for better context management
+title: '큰 문서 샤딩하기'
+description: 더 나은 컨텍스트 관리를 위해 큰 마크다운 파일을 작은 파일들로 분할하는 방법
 sidebar:
   order: 10
 ---
 
-Use the `bmad-shard-doc` tool if you need to split large markdown files into smaller, organized files for better context management.
+컨텍스트 관리를 위해 큰 마크다운 파일을 작고 체계적인 파일들로 분할해야 할 경우 `bmad-shard-doc` 도구를 사용하세요.
 
-:::caution[Deprecated]
-This is no longer recommended, and soon with updated workflows and most major LLMs and tools supporting subprocesses this will be unnecessary.
+:::caution[더 이상 권장되지 않음]
+이 방법은 더 이상 권장되지 않습니다. 워크플로우가 업데이트되고 대부분의 주요 LLM과 도구가 서브프로세스를 지원하게 되면 곧 불필요해질 것입니다.
 :::
 
-## When to Use This
+## 언제 사용하나요
 
-Only use this if you notice your chosen tool / model combination is failing to load and read all the documents as input when needed.
+선택한 도구/모델 조합이 필요한 문서를 입력으로 모두 로드하고 읽지 못하는 문제가 발생하는 경우에만 사용하세요.
 
-## What is Document Sharding?
+## 문서 샤딩이란?
 
-Document sharding splits large markdown files into smaller, organized files based on level 2 headings (`## Heading`).
+문서 샤딩은 큰 마크다운 파일을 2단계 헤딩(`## Heading`)을 기준으로 작고 체계적인 파일들로 분할합니다.
 
-### Architecture
+### 구조
 
 ```text
-Before Sharding:
+샤딩 전:
 _bmad-output/planning-artifacts/
-└── PRD.md (large 50k token file)
+└── PRD.md (50k 토큰에 달하는 큰 파일)
 
-After Sharding:
+샤딩 후:
 _bmad-output/planning-artifacts/
 └── prd/
-    ├── index.md                    # Table of contents with descriptions
-    ├── overview.md                 # Section 1
-    ├── user-requirements.md        # Section 2
-    ├── technical-requirements.md   # Section 3
-    └── ...                         # Additional sections
+    ├── index.md                    # 설명이 포함된 목차
+    ├── overview.md                 # 섹션 1
+    ├── user-requirements.md        # 섹션 2
+    ├── technical-requirements.md   # 섹션 3
+    └── ...                         # 추가 섹션
 ```
 
-## Steps
+## 단계
 
-### 1. Run the Shard-Doc Tool
+### 1. Shard-Doc 도구 실행
 
 ```bash
 /bmad-shard-doc
 ```
 
-### 2. Follow the Interactive Process
+### 2. 대화형 프로세스 진행
 
 ```text
 Agent: Which document would you like to shard?
@@ -60,19 +60,19 @@ Agent: Sharding PRD.md...
        ✓ Complete!
 ```
 
-## How Workflow Discovery Works
+## 워크플로우 검색 방식
 
-BMad workflows use a **dual discovery system**:
+BMad 워크플로우는 **이중 검색 시스템**을 사용합니다.
 
-1. **Try whole document first** - Look for `document-name.md`
-2. **Check for sharded version** - Look for `document-name/index.md`
-3. **Priority rule** - Whole document takes precedence if both exist - remove the whole document if you want the sharded to be used instead
+1. **전체 문서 우선 시도** — `document-name.md` 파일 탐색
+2. **샤딩된 버전 확인** — `document-name/index.md` 파일 탐색
+3. **우선순위 규칙** — 두 가지가 모두 존재하면 전체 문서가 우선 적용됩니다. 샤딩된 버전을 사용하려면 전체 문서 파일을 삭제하세요.
 
-## Workflow Support
+## 워크플로우 지원 범위
 
-All BMM workflows support both formats:
+모든 BMM 워크플로우는 다음 두 형식을 모두 지원합니다.
 
-- Whole documents
-- Sharded documents
-- Automatic detection
-- Transparent to user
+- 전체 문서
+- 샤딩된 문서
+- 자동 감지
+- 사용자에게 투명하게 처리

@@ -1,73 +1,73 @@
 ---
-title: 'Established Projects'
-description: How to use BMad Method on existing codebases
+title: '기존 프로젝트'
+description: 기존 코드베이스에서 BMad Method를 사용하는 방법
 sidebar:
   order: 7
 ---
 
-Use BMad Method effectively when working on existing projects and legacy codebases.
+기존 프로젝트와 레거시 코드베이스에서 BMad Method를 효과적으로 활용합니다.
 
-This guide covers the essential workflow for onboarding to existing projects with BMad Method.
+이 가이드는 BMad Method로 기존 프로젝트에 온보딩하는 핵심 워크플로우를 다룹니다.
 
-:::note[Prerequisites]
+:::note[사전 조건]
 
-- BMad Method installed (`npx bmad-method install`)
-- An existing codebase you want to work on
-- Access to an AI-powered IDE (Claude Code or Cursor)
+- BMad Method 설치 완료 (`npx bmad-method install`)
+- 작업할 기존 코드베이스
+- AI 기반 IDE 사용 가능 (Claude Code 또는 Cursor)
   :::
 
-## Step 1: Clean Up Completed Planning Artifacts
+## 1단계: 완료된 기획 산출물 정리
 
-If you have completed all PRD epics and stories through the BMad process, clean up those files. Archive them, delete them, or rely on version history if needed. Do not keep these files in:
+BMad 프로세스를 통해 모든 PRD 에픽과 스토리를 완료했다면 해당 파일들을 정리하세요. 필요하다면 보관하거나 삭제하거나 버전 히스토리에 의존하세요. 다음 경로에 이 파일들을 남겨두지 마세요:
 
 - `docs/`
 - `_bmad-output/planning-artifacts/`
 - `_bmad-output/implementation-artifacts/`
 
-## Step 2: Create Project Context
+## 2단계: 프로젝트 컨텍스트 생성
 
-:::tip[Recommended for Existing Projects]
-Generate `project-context.md` to capture your existing codebase patterns and conventions. This ensures AI agents follow your established practices when implementing changes.
+:::tip[기존 프로젝트에 권장]
+`project-context.md`를 생성하여 기존 코드베이스의 패턴과 관례를 기록하세요. 이를 통해 AI 에이전트가 변경 사항을 구현할 때 기존 관행을 따르도록 할 수 있습니다.
 :::
 
-Run the generate project context workflow:
+프로젝트 컨텍스트 생성 워크플로우를 실행하세요:
 
 ```bash
 bmad-generate-project-context
 ```
 
-This scans your codebase to identify:
+이 명령은 코드베이스를 스캔하여 다음을 파악합니다:
 
-- Technology stack and versions
-- Code organization patterns
-- Naming conventions
-- Testing approaches
-- Framework-specific patterns
+- 기술 스택과 버전
+- 코드 구성 패턴
+- 명명 관례
+- 테스트 방식
+- 프레임워크별 패턴
 
-You can review and refine the generated file, or create it manually at `_bmad-output/project-context.md` if you prefer.
+생성된 파일을 검토하고 수정하거나, 원한다면 `_bmad-output/project-context.md`에 직접 만들 수 있습니다.
 
-[Learn more about project context](../explanation/project-context.md)
+[프로젝트 컨텍스트에 대해 더 알아보기](../explanation/project-context.md)
 
-## Step 3: Maintain Quality Project Documentation
+## 3단계: 양질의 프로젝트 문서 유지
 
-Your `docs/` folder should contain succinct, well-organized documentation that accurately represents your project:
+`docs/` 폴더에는 프로젝트를 정확하게 표현하는 간결하고 잘 정리된 문서가 있어야 합니다:
 
-- Intent and business rationale
-- Business rules
-- Architecture
-- Any other relevant project information
+- 목적과 비즈니스 근거
+- 비즈니스 규칙
+- 아키텍처
+- 그 외 관련 프로젝트 정보
 
-For complex projects, consider using the `bmad-document-project` workflow. It offers runtime variants that will scan your entire project and document its actual current state.
+복잡한 프로젝트라면 `bmad-document-project` 워크플로우를 고려해 보세요. 전체 프로젝트를 스캔하여 실제 현재 상태를 문서화하는 런타임 변형을 제공합니다.
 
-## Step 3: Get Help
+## 3단계: 도움 받기
 
-### BMad-Help: Your Starting Point
+### BMad-Help: 시작점
 
-**Run `bmad-help` anytime you're unsure what to do next.** This intelligent guide:
+**다음에 무엇을 해야 할지 모를 때는 언제든 `bmad-help`를 실행하세요.** 이 지능형 가이드는:
 
-- Inspects your project to see what's already been done
-- Shows options based on your installed modules
-- Understands natural language queries
+- 프로젝트를 검사하여 이미 완료된 작업을 파악합니다
+- 설치된 모듈을 기반으로 선택지를 제시합니다
+- 자연어 질문을 이해합니다
 
 ```
 bmad-help I have an existing Rails app, where should I start?
@@ -75,45 +75,45 @@ bmad-help What's the difference between quick-flow and full method?
 bmad-help Show me what workflows are available
 ```
 
-BMad-Help also **automatically runs at the end of every workflow**, providing clear guidance on exactly what to do next.
+BMad-Help는 **모든 워크플로우 종료 시 자동으로 실행**되어 다음에 할 작업을 명확하게 안내합니다.
 
-### Choosing Your Approach
+### 접근 방식 선택
 
-You have two primary options depending on the scope of changes:
+변경 범위에 따라 두 가지 주요 옵션 중 하나를 선택합니다:
 
-| Scope                          | Recommended Approach                                                                                                                          |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Small updates or additions** | Run `bmad-quick-dev` to clarify intent, plan, implement, and review in a single workflow. The full four-phase BMad Method is likely overkill. |
-| **Major changes or additions** | Start with the BMad Method, applying as much or as little rigor as needed.                                                                    |
+| 범위 | 권장 접근 방식 |
+| ------------------------------ | ----------------------------------------------------------------------------- |
+| **소규모 업데이트 또는 추가** | `bmad-quick-dev`를 실행하여 의도 명확화, 계획 수립, 구현, 리뷰를 하나의 워크플로우로 처리하세요. 전체 4단계 BMad Method는 과도할 수 있습니다. |
+| **대규모 변경 또는 추가** | BMad Method로 시작하되, 필요한 만큼 엄격하게 적용하세요. |
 
-### During PRD Creation
+### PRD 작성 시
 
-When creating a brief or jumping directly into the PRD, ensure the agent:
+브리프를 작성하거나 PRD로 바로 들어갈 때는 에이전트가 다음을 수행하도록 확인하세요:
 
-- Finds and analyzes your existing project documentation
-- Reads the proper context about your current system
+- 기존 프로젝트 문서를 찾고 분석합니다
+- 현재 시스템에 대한 올바른 컨텍스트를 읽습니다
 
-You can guide the agent explicitly, but the goal is to ensure the new feature integrates well with your existing system.
+에이전트를 명시적으로 안내할 수 있지만, 목표는 새 기능이 기존 시스템과 잘 통합되도록 하는 것입니다.
 
-### UX Considerations
+### UX 고려 사항
 
-UX work is optional. The decision depends not on whether your project has a UX, but on:
+UX 작업은 선택 사항입니다. 결정 기준은 프로젝트에 UX가 있는지 여부가 아니라:
 
-- Whether you will be working on UX changes
-- Whether significant new UX designs or patterns are needed
+- UX 변경 작업을 할 것인지
+- 중요한 새 UX 디자인이나 패턴이 필요한지
 
-If your changes amount to simple updates to existing screens you are happy with, a full UX process is unnecessary.
+여부에 달려 있습니다. 기존 화면에 단순한 업데이트 정도라면 전체 UX 프로세스는 불필요합니다.
 
-### Architecture Considerations
+### 아키텍처 고려 사항
 
-When doing architecture, ensure the architect:
+아키텍처 작업을 할 때는 아키텍트가 다음을 수행하도록 하세요:
 
-- Uses the proper documented files
-- Scans the existing codebase
+- 올바른 문서 파일 사용
+- 기존 코드베이스 스캔
 
-Pay close attention here to prevent reinventing the wheel or making decisions that misalign with your existing architecture.
+기존 아키텍처와 맞지 않는 결정을 내리거나 바퀴를 재발명하는 일을 방지하기 위해 이 부분에 세심하게 주의를 기울이세요.
 
-## More Information
+## 추가 정보
 
-- **[Quick Fixes](./quick-fixes.md)** - Bug fixes and ad-hoc changes
-- **[Established Projects FAQ](../explanation/established-projects-faq.md)** - Common questions about working on established projects
+- **[빠른 수정](./quick-fixes.md)** - 버그 수정 및 임시 변경
+- **[기존 프로젝트 FAQ](../explanation/established-projects-faq.md)** - 기존 프로젝트 작업에 관한 자주 묻는 질문

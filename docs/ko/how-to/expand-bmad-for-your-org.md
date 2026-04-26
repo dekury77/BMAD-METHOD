@@ -1,65 +1,65 @@
 ---
-title: 'How to Expand BMad for Your Organization'
-description: Five customization patterns that reshape BMad without forking — agent-wide rules, workflow conventions, external publishing, template swaps, and agent roster changes
+title: '조직을 위한 BMad 확장하기'
+description: 포크 없이 BMad를 재구성하는 5가지 커스터마이즈 패턴 — 에이전트 전체 규칙, 워크플로우 관례, 외부 게시, 템플릿 교체, 에이전트 로스터 변경
 sidebar:
   order: 9
 ---
 
-BMad's customization surface lets an organization reshape behavior without editing installed files or forking skills. This guide walks through five recipes that cover most enterprise needs.
+BMad의 커스터마이즈 영역을 사용하면 설치된 파일을 편집하거나 스킬을 포크하지 않고도 조직의 동작을 재구성할 수 있습니다. 이 가이드는 대부분의 엔터프라이즈 요구를 충족하는 5가지 레시피를 안내합니다.
 
-:::note[Prerequisites]
+:::note[사전 조건]
 
-- BMad installed in your project (see [How to Install BMad](./install-bmad.md))
-- Familiarity with the customization model (see [How to Customize BMad](./customize-bmad.md))
-- Python 3.11+ on PATH (for the resolver — stdlib only, no `pip install`)
+- 프로젝트에 BMad가 설치되어 있어야 합니다 ([BMad 설치하기](./install-bmad.md) 참고)
+- 커스터마이즈 모델에 익숙해야 합니다 ([BMad 커스터마이즈하기](./customize-bmad.md) 참고)
+- PATH에 Python 3.11+ 가 있어야 합니다 (리졸버 실행용 — 표준 라이브러리만 사용, `pip install` 불필요)
 :::
 
-:::tip[Applying these recipes]
-The **per-skill recipes** below (Recipes 1–4) can be applied by running the `bmad-customize` skill and describing the intent — it will pick the right surface, author the override file, and verify the merge. Recipe 5 (central-config overrides to the agent roster) is out of scope for v1 of the skill and remains hand-authored. The recipes here are the source of truth for *what* to override; `bmad-customize` handles the *how* for the agent/workflow surface.
+:::tip[레시피 적용 방법]
+아래의 **스킬별 레시피** (레시피 1–4)는 `bmad-customize` 스킬을 실행하고 의도를 설명하면 적용할 수 있습니다 — 스킬이 올바른 영역을 선택하고, 오버라이드 파일을 작성하고, 병합 결과를 검증합니다. 레시피 5(에이전트 로스터에 대한 중앙 설정 오버라이드)는 스킬 v1에서는 지원하지 않으며, 직접 작성해야 합니다. 여기 있는 레시피가 *무엇을* 오버라이드할지에 대한 진실의 원천이며, `bmad-customize`가 에이전트/워크플로우 영역에서 *어떻게* 할지를 처리합니다.
 :::
 
-## The Three-Layer Mental Model
+## 3단계 멘탈 모델
 
-Before picking a recipe, know where your override lands:
+레시피를 선택하기 전에 오버라이드가 어디에 위치하는지 파악하세요:
 
-| Layer | Where overrides live | Scope |
+| 레이어 | 오버라이드 위치 | 범위 |
 |---|---|---|
-| **Agent** (e.g. Amelia, Mary, John) | `[agent]` section of `_bmad/custom/bmad-agent-{role}.toml` | Travels with the persona into **every workflow the agent dispatches** |
-| **Workflow** (e.g. product-brief, create-prd) | `[workflow]` section of `_bmad/custom/{workflow-name}.toml` | Applies only to that workflow's run |
-| **Central config** | `[agents.*]`, `[core]`, `[modules.*]` in `_bmad/custom/config.toml` | Agent roster (who's available for party-mode, retrospective, elicitation), install-time settings pinned org-wide |
+| **에이전트** (예: Amelia, Mary, John) | `_bmad/custom/bmad-agent-{role}.toml`의 `[agent]` 섹션 | 에이전트가 **디스패치하는 모든 워크플로우**에 페르소나와 함께 적용 |
+| **워크플로우** (예: product-brief, create-prd) | `_bmad/custom/{workflow-name}.toml`의 `[workflow]` 섹션 | 해당 워크플로우 실행에만 적용 |
+| **중앙 설정** | `_bmad/custom/config.toml`의 `[agents.*]`, `[core]`, `[modules.*]` | 에이전트 로스터(party-mode, retrospective, elicitation에 참여하는 인원), 전체 저장소에서 공유되는 설치 설정 |
 
-Rule of thumb: if the rule should apply everywhere an engineer does dev work, customize the **dev agent**. If it applies only when someone writes a product brief, customize the **product-brief workflow**. If it changes *who's in the room* (rename an agent, add a custom voice, enforce a shared artifact path), edit **central config**.
+경험칙: 개발자가 개발 작업을 할 때마다 규칙이 적용되어야 한다면 **dev 에이전트**를 커스터마이즈하세요. 누군가 제품 브리프를 작성할 때만 적용된다면 **product-brief 워크플로우**를 커스터마이즈하세요. *방에 있는 인원*을 변경하는 것이라면(에이전트 이름 바꾸기, 커스텀 목소리 추가, 공유 산출물 경로 강제) **중앙 설정**을 편집하세요.
 
-## Recipe 1: Shape an Agent Across Every Workflow It Dispatches
+## 레시피 1: 에이전트가 디스패치하는 모든 워크플로우에 걸쳐 에이전트 형성하기
 
-**Use case:** Standardize tool use and external system integrations so every workflow dispatched through an agent inherits the behavior. This is the highest-impact pattern.
+**사용 사례:** 도구 사용과 외부 시스템 통합을 표준화하여 에이전트를 통해 디스패치되는 모든 워크플로우가 해당 동작을 상속하도록 합니다. 가장 파급력이 큰 패턴입니다.
 
-**Example: Amelia (dev agent) always uses Context7 for library docs, and falls back to Linear when a story isn't found in the epics list.**
+**예시: Amelia(dev 에이전트)가 라이브러리 문서를 항상 Context7을 통해 조회하고, 에픽 목록에서 스토리를 찾지 못하면 Linear로 대체합니다.**
 
 ```toml
 # _bmad/custom/bmad-agent-dev.toml
 
 [agent]
 
-# Applied on every activation. Carries into dev-story, quick-dev,
-# create-story, code-review, qa-generate — every skill Amelia dispatches.
+# 모든 활성화에 적용됩니다. dev-story, quick-dev,
+# create-story, code-review, qa-generate 등 Amelia가 디스패치하는 모든 스킬에 전달됩니다.
 persistent_facts = [
   "For any library documentation lookup (React, TypeScript, Zod, Prisma, etc.), call the context7 MCP tool (`mcp__context7__resolve_library_id` then `mcp__context7__get_library_docs`) before relying on training-data knowledge. Up-to-date docs trump memorized APIs.",
   "When a story reference isn't found in {planning_artifacts}/epics-and-stories.md, search Linear via `mcp__linear__search_issues` using the story ID or title before asking the user to clarify. If Linear returns a match, treat it as the authoritative story source.",
 ]
 ```
 
-**Why this works:** Two sentences reshape every dev workflow in the org, with no per-workflow duplication and no source changes. Every new engineer who pulls the repo inherits the conventions automatically.
+**왜 효과적인가:** 두 문장이 조직 내 모든 dev 워크플로우를 재구성하며, 워크플로우별 중복이 없고 소스 변경도 없습니다. 저장소를 클론하는 모든 신규 개발자가 자동으로 관례를 상속받습니다.
 
-**Team file vs personal file:**
-- `bmad-agent-dev.toml`: committed to git; applies to the whole team
-- `bmad-agent-dev.user.toml`: gitignored; personal preferences layered on top
+**팀 파일 vs 개인 파일:**
+- `bmad-agent-dev.toml`: git에 커밋됨; 전체 팀에 적용
+- `bmad-agent-dev.user.toml`: gitignored; 개인 설정이 그 위에 레이어됨
 
-## Recipe 2: Enforce Organizational Conventions Inside a Specific Workflow
+## 레시피 2: 특정 워크플로우 내에서 조직 관례 강제하기
 
-**Use case:** Shape the *content* of a workflow's output so it meets compliance, audit, or downstream-consumer requirements.
+**사용 사례:** 규정 준수, 감사, 또는 하위 소비자 요구 사항을 충족하도록 워크플로우 출력의 *내용*을 형성합니다.
 
-**Example: every product brief must include compliance fields, and the agent knows about the org's publishing conventions.**
+**예시: 모든 제품 브리프에 규정 준수 필드가 포함되어야 하고, 에이전트가 조직의 게시 관례를 알아야 합니다.**
 
 ```toml
 # _bmad/custom/bmad-product-brief.toml
@@ -73,20 +73,20 @@ persistent_facts = [
 ]
 ```
 
-**What happens:** The facts load during Step 3 of the workflow's activation. When the agent drafts the brief, it knows the required fields and the enterprise conventions document. The shipped default (`file:{project-root}/**/project-context.md`) still loads, since this is an append.
+**동작 방식:** 사실(facts)은 워크플로우 활성화의 3단계에서 로드됩니다. 에이전트가 브리프를 작성할 때 필수 필드와 엔터프라이즈 관례 문서를 알게 됩니다. 기본 제공값(`file:{project-root}/**/project-context.md`)은 추가(append)이므로 계속 로드됩니다.
 
-## Recipe 3: Publish Completed Outputs to External Systems
+## 레시피 3: 완료된 출력을 외부 시스템에 게시하기
 
-**Use case:** Once the workflow produces its output, automatically publish to enterprise systems of record (Confluence, Notion, SharePoint) and open follow-up work (Jira, Linear, Asana).
+**사용 사례:** 워크플로우가 출력을 생성하면 엔터프라이즈 시스템(Confluence, Notion, SharePoint)에 자동으로 게시하고, 후속 작업(Jira, Linear, Asana)을 열도록 합니다.
 
-**Example: briefs auto-publish to Confluence and offer optional Jira epic creation.**
+**예시: 브리프를 Confluence에 자동 게시하고, 선택적으로 Jira 에픽 생성을 제안합니다.**
 
 ```toml
 # _bmad/custom/bmad-product-brief.toml
 
 [workflow]
 
-# Terminal hook. Scalar override replaces the empty default wholesale.
+# 종료 훅. 스칼라 오버라이드가 빈 기본값을 완전히 교체합니다.
 on_complete = """
 Publish and offer follow-up:
 
@@ -112,18 +112,18 @@ and ask the user to publish manually.
 """
 ```
 
-**Why `on_complete` and not `activation_steps_append`:** `on_complete` runs exactly once, at the terminal stage, after the workflow's main output is written. That's the right moment to publish artifacts. `activation_steps_append` runs every activation, before the workflow does its work.
+**`activation_steps_append`가 아닌 `on_complete`를 사용하는 이유:** `on_complete`는 워크플로우의 주요 출력이 작성된 후 종료 단계에 정확히 한 번 실행됩니다. 바로 그 시점이 산출물을 게시할 올바른 순간입니다. `activation_steps_append`는 워크플로우가 작업을 수행하기 전에 매번 활성화 시 실행됩니다.
 
-**Tradeoffs:**
-- **Confluence publication is non-destructive** and always runs on completion
-- **Jira epic creation is visible to the whole team** and kicks off sprint-planning signals, so gate it on user confirmation
-- **Graceful fallback:** if MCP tools fail, hand off to the user rather than silently dropping the output
+**트레이드오프:**
+- **Confluence 게시는 비파괴적**이며 완료 시 항상 실행됩니다
+- **Jira 에픽 생성은 전체 팀에 가시적**이며 스프린트 플래닝 신호를 시작하므로 사용자 확인을 게이트로 두세요
+- **우아한 폴백:** MCP 도구가 실패하면 출력을 조용히 버리지 않고 사용자에게 넘깁니다
 
-## Recipe 4: Swap in Your Own Output Template
+## 레시피 4: 자체 출력 템플릿으로 교체하기
 
-**Use case:** The default output structure doesn't match your organization's expected format, or different orgs in the same repo need different templates.
+**사용 사례:** 기본 출력 구조가 조직의 예상 형식과 맞지 않거나, 같은 저장소의 다른 조직이 각기 다른 템플릿을 필요로 할 때.
 
-**Example: point the product-brief workflow at an enterprise-owned template.**
+**예시: product-brief 워크플로우가 엔터프라이즈 소유 템플릿을 사용하도록 지정합니다.**
 
 ```toml
 # _bmad/custom/bmad-product-brief.toml
@@ -132,36 +132,36 @@ and ask the user to publish manually.
 brief_template = "{project-root}/docs/enterprise/brief-template.md"
 ```
 
-**How it works:** The workflow's `customize.toml` ships with `brief_template = "resources/brief-template.md"` (bare path, resolves from skill root). Your override points at a file under `{project-root}`, so the agent reads your template in Stage 4 instead of the shipped one.
+**동작 방식:** 워크플로우의 `customize.toml`은 `brief_template = "resources/brief-template.md"` (스킬 루트에서 해석되는 단순 경로)로 제공됩니다. 오버라이드는 `{project-root}` 아래 파일을 가리키므로 에이전트가 4단계에서 기본 제공 템플릿 대신 자체 템플릿을 읽게 됩니다.
 
-**Template authoring tips:**
-- Keep templates in `{project-root}/docs/` or `{project-root}/_bmad/custom/templates/` so they version alongside the override file
-- Use the same structural conventions as the shipped template (section headings, frontmatter); the agent adapts to what's there
-- For multi-org repos, use `.user.toml` to let individual teams point at their own templates without touching the committed team file
+**템플릿 작성 팁:**
+- 템플릿은 오버라이드 파일과 함께 버전이 관리될 수 있도록 `{project-root}/docs/` 또는 `{project-root}/_bmad/custom/templates/`에 두세요
+- 제공된 템플릿과 동일한 구조 관례(섹션 헤딩, frontmatter)를 사용하세요. 에이전트는 있는 내용에 맞게 적응합니다
+- 멀티 조직 저장소의 경우 `.user.toml`을 사용하면 커밋된 팀 파일을 건드리지 않고 각 팀이 자신의 템플릿을 지정할 수 있습니다
 
-## Recipe 5: Customize the Agent Roster
+## 레시피 5: 에이전트 로스터 커스터마이즈하기
 
-**Use case:** Change *who's in the room* for roster-driven skills like `bmad-party-mode`, `bmad-retrospective`, and `bmad-advanced-elicitation`, without editing any source or forking. Three common variants follow.
+**사용 사례:** 소스를 편집하거나 포크하지 않고 `bmad-party-mode`, `bmad-retrospective`, `bmad-advanced-elicitation` 같은 로스터 기반 스킬의 *방에 있는 인원*을 변경합니다. 다음은 세 가지 일반적인 변형입니다.
 
-### 5a. Rebrand a BMad Agent Org-Wide
+### 5a. BMad 에이전트를 조직 전체에서 리브랜딩하기
 
-Every real agent has a descriptor the installer synthesizes from `module.yaml`. Override it to shift voice and framing across every roster consumer:
+모든 실제 에이전트에는 설치 도구가 `module.yaml`에서 합성하는 디스크립터가 있습니다. 이를 오버라이드하면 모든 로스터 소비자에서 목소리와 프레이밍이 바뀝니다:
 
 ```toml
-# _bmad/custom/config.toml (committed — applies to every developer)
+# _bmad/custom/config.toml (커밋됨 — 모든 개발자에게 적용)
 
 [agents.bmad-agent-analyst]
 description = "Mary the Regulatory-Aware Business Analyst — channels Porter and Minto, but lives and breathes FDA audit trails. Speaks like a forensic investigator presenting a case file."
 ```
 
-Party-mode spawns Mary with the new description. The analyst activation itself still runs normally because Mary's behavior lives in her per-skill `customize.toml`. This override changes how **external skills perceive and introduce her**, not how she works internally.
+party-mode가 새 설명으로 Mary를 소환합니다. 분석가 활성화 자체는 정상적으로 실행됩니다 — Mary의 동작은 그녀의 스킬별 `customize.toml`에 있기 때문입니다. 이 오버라이드는 **외부 스킬이 그녀를 인식하고 소개하는 방식**을 변경하며, 내부 동작은 바꾸지 않습니다.
 
-### 5b. Add a Fictional or Custom Agent
+### 5b. 가상 또는 커스텀 에이전트 추가하기
 
-A full descriptor is enough for roster-based features, with no skill folder needed. Useful for personality variety in party mode or brainstorming sessions:
+로스터 기반 기능에는 전체 디스크립터만으로 충분하며, 스킬 폴더가 필요 없습니다. party-mode나 브레인스토밍 세션에서 다양한 개성을 위해 유용합니다:
 
 ```toml
-# _bmad/custom/config.user.toml (personal — gitignored)
+# _bmad/custom/config.user.toml (개인용 — gitignored)
 
 [agents.spock]
 team = "startrek"
@@ -178,11 +178,11 @@ icon = "⚕️"
 description = "Country doctor's warmth, short fuse. 'Dammit Jim, I'm a doctor not a ___.' Ethics-driven counterweight to Spock."
 ```
 
-Ask party-mode to "invite the Enterprise crew." It filters by `team = "startrek"` and spawns Spock and McCoy with those descriptors. Real BMad agents (Mary, Amelia) can sit at the same table if you ask them to.
+party-mode에 "Enterprise 승무원을 초대해줘"라고 하면, `team = "startrek"`으로 필터링하여 Spock과 McCoy를 해당 디스크립터로 소환합니다. 원한다면 실제 BMad 에이전트(Mary, Amelia)도 같은 자리에 함께 초대할 수 있습니다.
 
-### 5c. Pin Team Install Settings
+### 5c. 팀 설치 설정 고정하기
 
-The installer prompts each developer for values like `planning_artifacts` path. When the org needs one shared answer across the team, pin it in central config — any developer's local prompt answer gets overridden at resolution time:
+설치 도구는 각 개발자에게 `planning_artifacts` 경로 같은 값을 묻습니다. 조직에서 팀 전체가 동일한 답변을 사용해야 할 때는 중앙 설정에 고정하세요 — 개발자의 로컬 프롬프트 답변이 해석 시 오버라이드됩니다:
 
 ```toml
 # _bmad/custom/config.toml
@@ -195,20 +195,20 @@ implementation_artifacts = "{project-root}/shared/implementation"
 document_output_language = "English"
 ```
 
-Personal settings like `user_name`, `communication_language`, or `user_skill_level` stay under each developer's own `_bmad/config.user.toml`. The team file shouldn't touch those.
+`user_name`, `communication_language`, `user_skill_level` 같은 개인 설정은 각 개발자 자신의 `_bmad/config.user.toml`에 유지합니다. 팀 파일은 이런 설정을 건드리면 안 됩니다.
 
-**Why central config vs per-agent customize.toml:** Per-agent files shape how *one* agent behaves when it activates. Central config shapes what roster consumers *see when they look at the field:* which agents exist, what they're called, what team they belong to, and the shared install settings the whole repo agrees on. Two surfaces, different jobs.
+**왜 중앙 설정이 스킬별 customize.toml과 다른가:** 스킬별 파일은 에이전트가 활성화될 때 *하나의* 에이전트가 어떻게 동작할지를 형성합니다. 중앙 설정은 로스터 소비자가 *필드를 바라볼 때 보게 되는 것*을 형성합니다: 어떤 에이전트가 존재하고, 이름은 무엇이며, 어떤 팀에 속하고, 전체 저장소가 동의하는 공유 설치 설정이 무엇인지. 두 영역은 서로 다른 역할을 합니다.
 
-## Reinforce Global Rules in Your IDE's Session File
+## IDE 세션 파일에서 전역 규칙 강화하기
 
-BMad customizations load when a skill is activated. Many IDE tools also load a global instruction file at the **start of every session**, before any skill runs (`CLAUDE.md`, `AGENTS.md`, `.cursor/rules/`, `.github/copilot-instructions.md`, etc). For rules that should hold even outside BMad skills, restate the critical ones there too.
+BMad 커스터마이징은 스킬이 활성화될 때 로드됩니다. 많은 IDE 도구들은 스킬이 실행되기 전 **모든 세션 시작 시** 전역 명령 파일을 로드합니다(`CLAUDE.md`, `AGENTS.md`, `.cursor/rules/`, `.github/copilot-instructions.md` 등). BMad 스킬 밖에서도 유지되어야 하는 규칙은 거기서도 다시 명시하세요.
 
-**When to double up:**
-- A rule is important enough that a plain chat conversation (no skill active) should still follow it
-- You want belt-and-suspenders enforcement because training-data defaults might otherwise pull the model off-course
-- The rule is concise enough to repeat without bloating the session file
+**이중으로 명시할 시점:**
+- 일반 채팅(활성 스킬 없음)에서도 규칙이 적용되어야 할 만큼 중요한 경우
+- 학습 데이터 기본값이 모델을 이탈시킬 수 있어 이중 강제가 필요한 경우
+- 세션 파일을 부풀리지 않고 반복할 수 있을 만큼 간결한 규칙인 경우
 
-**Example: one line in the repo's `CLAUDE.md` reinforcing the dev-agent rule from Recipe 1.**
+**예시: 레시피 1의 dev-agent 규칙을 강화하는 저장소 `CLAUDE.md`의 한 줄.**
 
 ```markdown
 <!-- Any file-read of library docs goes through the context7 MCP tool
@@ -216,23 +216,23 @@ BMad customizations load when a skill is activated. Many IDE tools also load a g
 before relying on training-data knowledge. -->
 ```
 
-One sentence, loaded every session. It pairs with the `bmad-agent-dev.toml` customization so the rule applies both inside Amelia's workflows and during ad-hoc chats with the assistant. Each layer owns its own scope:
+한 문장이 매 세션에 로드됩니다. `bmad-agent-dev.toml` 커스터마이징과 짝을 이루어 Amelia의 워크플로우 내부와 어시스턴트와의 임시 채팅 모두에서 규칙이 적용됩니다. 각 레이어가 자체 범위를 담당합니다:
 
-| Layer | Scope | Use for |
+| 레이어 | 범위 | 용도 |
 |---|---|---|
-| IDE session file (`CLAUDE.md` / `AGENTS.md`) | Every session, before any skill activates | Short, universal rules that should survive outside BMad |
-| BMad agent customization | Every workflow the agent dispatches | Agent-persona-specific behavior |
-| BMad workflow customization | One workflow run | Workflow-specific output shape, publishing hooks, templates |
-| BMad central config | Agent roster + shared install settings | Who's in the room and what shared paths the team uses |
+| IDE 세션 파일 (`CLAUDE.md` / `AGENTS.md`) | 모든 세션, 스킬 활성화 전 | BMad 외부에서도 유지되어야 하는 짧고 보편적인 규칙 |
+| BMad 에이전트 커스터마이즈 | 에이전트가 디스패치하는 모든 워크플로우 | 에이전트 페르소나별 동작 |
+| BMad 워크플로우 커스터마이즈 | 하나의 워크플로우 실행 | 워크플로우별 출력 형태, 게시 훅, 템플릿 |
+| BMad 중앙 설정 | 에이전트 로스터 + 공유 설치 설정 | 방에 있는 인원과 팀이 사용하는 공유 경로 |
 
-Keep the IDE file **succinct**. A dozen well-chosen lines are more effective than a sprawling list. Models read it every turn, and noise crowds out signal.
+IDE 파일은 **간결하게** 유지하세요. 잘 선택된 열두 줄이 방대한 목록보다 효과적입니다. 모델은 매 턴마다 이를 읽으며, 잡음은 신호를 밀어냅니다.
 
-## Combining Recipes
+## 레시피 조합하기
 
-All five recipes compose. A realistic enterprise override for `bmad-product-brief` might set `persistent_facts` (Recipe 2), `on_complete` (Recipe 3), and `brief_template` (Recipe 4) in one file. The agent-level rule (Recipe 1) lives in a separate file under the agent's name, central config (Recipe 5) pins the shared roster and team settings, and all four apply in parallel.
+5가지 레시피는 모두 조합할 수 있습니다. 현실적인 엔터프라이즈 `bmad-product-brief` 오버라이드는 하나의 파일에 `persistent_facts`(레시피 2), `on_complete`(레시피 3), `brief_template`(레시피 4)을 함께 설정할 수 있습니다. 에이전트 수준 규칙(레시피 1)은 에이전트 이름의 별도 파일에, 중앙 설정(레시피 5)은 공유 로스터와 팀 설정을 고정하며, 네 가지 모두 병렬로 적용됩니다.
 
 ```toml
-# _bmad/custom/bmad-product-brief.toml (workflow-level)
+# _bmad/custom/bmad-product-brief.toml (워크플로우 수준)
 
 [workflow]
 persistent_facts = ["..."]
@@ -241,18 +241,18 @@ on_complete = """ ... """
 ```
 
 ```toml
-# _bmad/custom/bmad-agent-analyst.toml (agent-level — Mary dispatches product-brief)
+# _bmad/custom/bmad-agent-analyst.toml (에이전트 수준 — Mary가 product-brief를 디스패치)
 
 [agent]
 persistent_facts = ["Always include a 'Regulatory Review' section when the domain involves healthcare, finance, or children's data."]
 ```
 
-Result: Mary loads the regulatory-review rule at persona activation. When the user picks the product-brief menu item, the workflow loads its own conventions on top, writes to the enterprise template, and publishes to Confluence on completion. Every layer contributes, and none of them required editing BMad source.
+결과: Mary가 페르소나 활성화 시 규정 리뷰 규칙을 로드합니다. 사용자가 product-brief 메뉴 항목을 선택하면 워크플로우가 자체 관례를 추가로 로드하고, 엔터프라이즈 템플릿에 작성하며, 완료 시 Confluence에 게시합니다. 모든 레이어가 기여하며, BMad 소스를 편집할 필요가 없습니다.
 
-## Troubleshooting
+## 문제 해결
 
-**Override not taking effect?** Check that the file is under `_bmad/custom/` with the exact skill directory name (e.g. `bmad-agent-dev.toml`, not `bmad-dev.toml`). See [How to Customize BMad](./customize-bmad.md#troubleshooting).
+**오버라이드가 적용되지 않나요?** 파일이 `_bmad/custom/` 아래 정확한 스킬 디렉터리 이름으로 있는지 확인하세요 (예: `bmad-agent-dev.toml`, `bmad-dev.toml`이 아님). [BMad 커스터마이즈하기](./customize-bmad.md#troubleshooting)를 참고하세요.
 
-**MCP tool name unknown?** Use the exact name the MCP server exposes in the current session. Ask Claude Code to list available MCP tools if unsure. Hardcoded names in `persistent_facts` or `on_complete` won't work if the MCP server isn't connected.
+**MCP 도구 이름을 모르시나요?** 현재 세션에서 MCP 서버가 노출하는 정확한 이름을 사용하세요. 확실하지 않으면 Claude Code에 사용 가능한 MCP 도구를 나열해달라고 하세요. MCP 서버가 연결되어 있지 않으면 `persistent_facts`나 `on_complete`에 하드코딩된 이름이 동작하지 않습니다.
 
-**Pattern doesn't apply to my setup?** The recipes above are illustrative. The underlying machinery (three-layer merge, structural rules, agent-spans-workflow) supports many more patterns; compose them as needed.
+**패턴이 내 설정에 맞지 않나요?** 위의 레시피는 예시입니다. 기본 메커니즘(3단계 병합, 구조적 규칙, 에이전트-워크플로우 범위)은 훨씬 더 다양한 패턴을 지원합니다. 필요에 맞게 조합하세요.

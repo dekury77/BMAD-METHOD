@@ -1,77 +1,77 @@
 ---
-title: "Why Solutioning Matters"
-description: Understanding why the solutioning phase is critical for multi-epic projects
+title: "해결책 설계가 중요한 이유"
+description: 멀티 에픽 프로젝트에서 해결책 설계 단계가 왜 중요한지 이해합니다
 sidebar:
   order: 3
 ---
 
 
-Phase 3 (Solutioning) translates **what** to build (from Planning) into **how** to build it (technical design). This phase prevents agent conflicts in multi-epic projects by documenting architectural decisions before implementation begins.
+3단계(해결책 설계)는 플래닝에서 도출한 **무엇을** 만들 것인지를 **어떻게** 만들 것인지(기술 설계)로 변환합니다. 이 단계는 구현이 시작되기 전에 아키텍처 결정을 문서화하여 멀티 에픽 프로젝트에서의 에이전트 충돌을 방지합니다.
 
-## The Problem Without Solutioning
-
-```text
-Agent 1 implements Epic 1 using REST API
-Agent 2 implements Epic 2 using GraphQL
-Result: Inconsistent API design, integration nightmare
-```
-
-When multiple agents implement different parts of a system without shared architectural guidance, they make independent technical decisions that may conflict.
-
-## The Solution With Solutioning
+## 해결책 설계 없이 발생하는 문제
 
 ```text
-architecture workflow decides: "Use GraphQL for all APIs"
-All agents follow architecture decisions
-Result: Consistent implementation, no conflicts
+에이전트 1이 에픽 1을 REST API로 구현
+에이전트 2가 에픽 2를 GraphQL로 구현
+결과: 일관성 없는 API 설계, 통합 악몽
 ```
 
-By documenting technical decisions explicitly, all agents implement consistently and integration becomes straightforward.
+공유된 아키텍처 가이드라인 없이 여러 에이전트가 시스템의 서로 다른 부분을 구현하면, 서로 충돌하는 독립적인 기술 결정을 내리게 됩니다.
 
-## Solutioning vs Planning
+## 해결책 설계로 해결하는 방법
 
-| Aspect   | Planning (Phase 2)      | Solutioning (Phase 3)             |
-| -------- | ----------------------- | --------------------------------- |
-| Question | What and Why?           | How? Then What units of work?     |
-| Output   | FRs/NFRs (Requirements) | Architecture + Epics/Stories      |
-| Agent    | PM                      | Architect → PM                    |
-| Audience | Stakeholders            | Developers                        |
-| Document | PRD (FRs/NFRs)          | Architecture + Epic Files         |
-| Level    | Business logic          | Technical design + Work breakdown |
+```text
+아키텍처 워크플로우가 결정: "모든 API에 GraphQL 사용"
+모든 에이전트가 아키텍처 결정을 따름
+결과: 일관된 구현, 충돌 없음
+```
 
-## Key Principle
+기술적 결정을 명시적으로 문서화함으로써 모든 에이전트가 일관되게 구현하고, 통합이 매끄럽게 이루어집니다.
 
-**Make technical decisions explicit and documented** so all agents implement consistently.
+## 해결책 설계 vs 플래닝
 
-This prevents:
-- API style conflicts (REST vs GraphQL)
-- Database design inconsistencies
-- State management disagreements
-- Naming convention mismatches
-- Security approach variations
+| 항목     | 플래닝 (2단계)               | 해결책 설계 (3단계)                     |
+| -------- | ---------------------------- | --------------------------------------- |
+| 질문     | 무엇을, 왜?                  | 어떻게? 그다음 어떤 작업 단위로?        |
+| 산출물   | FR/NFR (요구사항)            | 아키텍처 + 에픽/스토리                  |
+| 에이전트 | PM                           | 아키텍트 → PM                           |
+| 독자     | 이해관계자                   | 개발자                                  |
+| 문서     | PRD (FR/NFR)                 | 아키텍처 + 에픽 파일                    |
+| 수준     | 비즈니스 로직                | 기술 설계 + 작업 분해                   |
 
-## When Solutioning is Required
+## 핵심 원칙
 
-| Track | Solutioning Required? |
-|-------|----------------------|
-| Quick Flow | No - skip entirely |
-| BMad Method Simple | Optional |
-| BMad Method Complex | Yes |
-| Enterprise | Yes |
+**기술적 결정을 명시적으로 문서화하여** 모든 에이전트가 일관되게 구현하도록 합니다.
 
-:::tip[Rule of Thumb]
-If you have multiple epics that could be implemented by different agents, you need solutioning.
+이를 통해 다음을 방지합니다:
+- API 스타일 충돌 (REST vs GraphQL)
+- 데이터베이스 설계 불일관성
+- 상태 관리 방식 불일치
+- 네이밍 컨벤션 혼재
+- 보안 접근 방식 불통일
+
+## 해결책 설계가 필요한 경우
+
+| 트랙                   | 해결책 설계 필요 여부 |
+|------------------------|----------------------|
+| Quick Flow             | 아니오 - 완전히 건너뜀 |
+| BMad Method Simple     | 선택 사항             |
+| BMad Method Complex    | 예                    |
+| Enterprise             | 예                    |
+
+:::tip[경험 법칙]
+여러 에이전트가 각각 구현할 수 있는 에픽이 여럿 있다면 해결책 설계가 필요합니다.
 :::
 
-## The Cost of Skipping
+## 건너뛸 때의 비용
 
-Skipping solutioning on complex projects leads to:
+복잡한 프로젝트에서 해결책 설계를 건너뛰면:
 
-- **Integration issues** discovered mid-sprint
-- **Rework** due to conflicting implementations
-- **Longer development time** overall
-- **Technical debt** from inconsistent patterns
+- **통합 문제**가 스프린트 중간에 발견됩니다
+- **재작업**이 발생합니다 (충돌하는 구현 때문에)
+- **전체 개발 시간**이 늘어납니다
+- **일관성 없는 패턴**으로 인한 기술 부채가 쌓입니다
 
-:::caution[Cost Multiplier]
-Catching alignment issues in solutioning is 10× faster than discovering them during implementation.
+:::caution[비용 배수]
+해결책 설계 단계에서 정렬 문제를 발견하는 것이 구현 중에 발견하는 것보다 10배 빠릅니다.
 :::

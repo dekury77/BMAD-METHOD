@@ -1,106 +1,106 @@
 ---
-title: Testing Options
-description: Comparing the built-in QA workflow with the Test Architect (TEA) module for test automation.
+title: 테스팅 옵션
+description: 테스트 자동화를 위한 내장 QA 워크플로우와 Test Architect (TEA) 모듈 비교
 sidebar:
   order: 5
 ---
 
-BMad provides two testing paths: a built-in QA workflow for fast test generation and an installable Test Architect module for enterprise-grade test strategy.
+BMad는 두 가지 테스팅 경로를 제공합니다. 빠른 테스트 생성을 위한 내장 QA 워크플로우와 엔터프라이즈급 테스트 전략을 위한 설치형 Test Architect 모듈입니다.
 
-## Which Should You Use?
+## 어느 것을 사용해야 할까요?
 
-| Factor | Built-in QA | TEA Module |
+| 요소 | 내장 QA | TEA 모듈 |
 | --- | --- | --- |
-| **Best for** | Small-medium projects, quick coverage | Large projects, regulated or complex domains |
-| **Setup** | Nothing to install -- included in BMM | Install separately via `npx bmad-method install` |
-| **Approach** | Generate tests fast, iterate later | Plan first, then generate with traceability |
-| **Test types** | API and E2E tests | API, E2E, ATDD, NFR, and more |
-| **Strategy** | Happy path + critical edge cases | Risk-based prioritization (P0-P3) |
-| **Workflow count** | 1 (Automate) | 9 (design, ATDD, automate, review, trace, and others) |
+| **적합한 대상** | 소~중규모 프로젝트, 빠른 커버리지 확보 | 대규모 프로젝트, 규제 또는 복잡한 도메인 |
+| **설정** | 별도 설치 불필요 — BMM에 포함 | `npx bmad-method install`로 별도 설치 |
+| **접근 방식** | 빠른 테스트 생성 후 반복 개선 | 먼저 계획, 추적성을 갖추어 생성 |
+| **테스트 유형** | API 및 E2E 테스트 | API, E2E, ATDD, NFR 등 |
+| **전략** | 해피 패스 + 핵심 엣지 케이스 | 리스크 기반 우선순위 지정 (P0-P3) |
+| **워크플로우 수** | 1개 (Automate) | 9개 (설계, ATDD, 자동화, 리뷰, 추적 등) |
 
-:::tip[Start with built-in QA]
-Most projects should start with the built-in QA workflow. If you later need test strategy, quality gates, or requirements traceability, install TEA alongside it.
+:::tip[내장 QA부터 시작하세요]
+대부분의 프로젝트는 내장 QA 워크플로우로 시작하는 것이 좋습니다. 이후 테스트 전략, 품질 게이트, 요구사항 추적성이 필요해지면 TEA를 추가 설치하면 됩니다.
 :::
 
-## Built-in QA Workflow
+## 내장 QA 워크플로우
 
-The built-in QA workflow (`bmad-qa-generate-e2e-tests`) is part of the BMM (Agile suite) module, available through the Developer agent. It generates working tests quickly using your project's existing test framework -- no configuration or additional installation required.
+내장 QA 워크플로우(`bmad-qa-generate-e2e-tests`)는 개발자 에이전트를 통해 사용할 수 있는 BMM (Agile suite) 모듈의 일부입니다. 프로젝트의 기존 테스트 프레임워크를 사용하여 별도 설정이나 추가 설치 없이 테스트를 빠르게 생성합니다.
 
-**Trigger:** `QA` (via the Developer agent) or `bmad-qa-generate-e2e-tests`
+**트리거:** `QA` (개발자 에이전트를 통해) 또는 `bmad-qa-generate-e2e-tests`
 
-### What It Does
+### 동작 방식
 
-The QA workflow (Automate) walks through five steps:
+QA 워크플로우(Automate)는 5단계로 진행됩니다.
 
-1. **Detect test framework** -- scans `package.json` and existing test files for your framework (Jest, Vitest, Playwright, Cypress, or any standard runner). If none exists, analyzes the project stack and suggests one.
-2. **Identify features** -- asks what to test or auto-discovers features in the codebase.
-3. **Generate API tests** -- covers status codes, response structure, happy path, and 1-2 error cases.
-4. **Generate E2E tests** -- covers user workflows with semantic locators and visible-outcome assertions.
-5. **Run and verify** -- executes the generated tests and fixes failures immediately.
+1. **테스트 프레임워크 감지** — `package.json`과 기존 테스트 파일을 스캔하여 프레임워크(Jest, Vitest, Playwright, Cypress, 또는 기타 표준 실행기)를 파악합니다. 프레임워크가 없으면 프로젝트 스택을 분석하여 적합한 것을 제안합니다.
+2. **기능 식별** — 테스트할 대상을 묻거나 코드베이스에서 기능을 자동으로 탐색합니다.
+3. **API 테스트 생성** — 상태 코드, 응답 구조, 해피 패스, 1~2개의 오류 케이스를 커버합니다.
+4. **E2E 테스트 생성** — 시맨틱 로케이터와 가시적 결과 어서션을 사용하여 사용자 워크플로우를 커버합니다.
+5. **실행 및 검증** — 생성된 테스트를 실행하고 실패를 즉시 수정합니다.
 
-The workflow produces a test summary saved to your project's implementation artifacts folder.
+워크플로우는 프로젝트의 구현 산출물 폴더에 테스트 요약을 저장합니다.
 
-### Test Patterns
+### 테스트 패턴
 
-Generated tests follow a "simple and maintainable" philosophy:
+생성된 테스트는 "단순하고 유지 관리 가능한" 철학을 따릅니다.
 
-- **Standard framework APIs only** -- no external utilities or custom abstractions
-- **Semantic locators** for UI tests (roles, labels, text rather than CSS selectors)
-- **Independent tests** with no order dependencies
-- **No hardcoded waits or sleeps**
-- **Clear descriptions** that read as feature documentation
+- **표준 프레임워크 API만 사용** — 외부 유틸리티나 커스텀 추상화 없음
+- UI 테스트에 **시맨틱 로케이터** 사용 (CSS 선택자 대신 역할, 레이블, 텍스트)
+- 순서 의존성이 없는 **독립 테스트**
+- **하드코딩된 대기나 sleep 없음**
+- 기능 문서로 읽히는 **명확한 설명**
 
-:::note[Scope]
-The QA workflow generates tests only. For code review and story validation, use the Code Review workflow (`CR`) instead.
+:::note[범위]
+QA 워크플로우는 테스트 생성만 담당합니다. 코드 리뷰와 스토리 검증은 코드 리뷰 워크플로우(`CR`)를 사용하세요.
 :::
 
-### When to Use Built-in QA
+### 내장 QA 사용 시점
 
-- Quick test coverage for a new or existing feature
-- Beginner-friendly test automation without advanced setup
-- Standard test patterns that any developer can read and maintain
-- Small-medium projects where comprehensive test strategy is unnecessary
+- 신규 또는 기존 기능에 대한 빠른 테스트 커버리지
+- 고급 설정 없이 초보자도 쉽게 사용하는 테스트 자동화
+- 모든 개발자가 읽고 유지 관리할 수 있는 표준 테스트 패턴
+- 포괄적인 테스트 전략이 불필요한 소~중규모 프로젝트
 
-## Test Architect (TEA) Module
+## Test Architect (TEA) 모듈
 
-TEA is a standalone module that provides an expert agent (Murat) and nine structured workflows for enterprise-grade testing. It goes beyond test generation into test strategy, risk-based planning, quality gates, and requirements traceability.
+TEA는 엔터프라이즈급 테스팅을 위한 전문 에이전트(Murat)와 9개의 구조화된 워크플로우를 제공하는 독립 모듈입니다. 테스트 생성을 넘어 테스트 전략, 리스크 기반 계획, 품질 게이트, 요구사항 추적성까지 다룹니다.
 
-- **Documentation:** [TEA Module Docs](https://bmad-code-org.github.io/bmad-method-test-architecture-enterprise/)
-- **Install:** `npx bmad-method install` and select the TEA module
+- **문서:** [TEA 모듈 문서](https://bmad-code-org.github.io/bmad-method-test-architecture-enterprise/)
+- **설치:** `npx bmad-method install` 실행 후 TEA 모듈 선택
 - **npm:** [`bmad-method-test-architecture-enterprise`](https://www.npmjs.com/package/bmad-method-test-architecture-enterprise)
 
-### What TEA Provides
+### TEA가 제공하는 것
 
-| Workflow | Purpose |
+| 워크플로우 | 목적 |
 | --- | --- |
-| Test Design | Create a comprehensive test strategy tied to requirements |
-| ATDD | Acceptance-test-driven development with stakeholder criteria |
-| Automate | Generate tests with advanced patterns and utilities |
-| Test Review | Validate test quality and coverage against strategy |
-| Traceability | Map tests back to requirements for audit and compliance |
-| NFR Assessment | Evaluate non-functional requirements (performance, security) |
-| CI Setup | Configure test execution in continuous integration pipelines |
-| Framework Scaffolding | Set up test infrastructure and project structure |
-| Release Gate | Make data-driven go/no-go release decisions |
+| Test Design | 요구사항과 연결된 포괄적인 테스트 전략 수립 |
+| ATDD | 이해관계자 기준을 갖춘 인수 테스트 기반 개발 |
+| Automate | 고급 패턴과 유틸리티를 사용한 테스트 생성 |
+| Test Review | 전략 대비 테스트 품질 및 커버리지 검증 |
+| Traceability | 감사 및 컴플라이언스를 위한 요구사항-테스트 매핑 |
+| NFR Assessment | 비기능 요구사항 평가 (성능, 보안) |
+| CI Setup | 지속적 통합 파이프라인의 테스트 실행 구성 |
+| Framework Scaffolding | 테스트 인프라 및 프로젝트 구조 설정 |
+| Release Gate | 데이터 기반 릴리즈 가부 결정 |
 
-TEA also supports P0-P3 risk-based prioritization and optional integrations with Playwright Utils and MCP tooling.
+TEA는 P0-P3 리스크 기반 우선순위 지정과 Playwright Utils 및 MCP 툴링과의 선택적 통합도 지원합니다.
 
-### When to Use TEA
+### TEA 사용 시점
 
-- Projects that require requirements traceability or compliance documentation
-- Teams that need risk-based test prioritization across many features
-- Enterprise environments with formal quality gates before release
-- Complex domains where test strategy must be planned before tests are written
-- Projects that have outgrown the built-in QA's single-workflow approach
+- 요구사항 추적성 또는 컴플라이언스 문서가 필요한 프로젝트
+- 많은 기능에 걸쳐 리스크 기반 테스트 우선순위 지정이 필요한 팀
+- 릴리즈 전 공식 품질 게이트가 있는 엔터프라이즈 환경
+- 테스트를 작성하기 전에 테스트 전략을 먼저 계획해야 하는 복잡한 도메인
+- 내장 QA의 단일 워크플로우 접근 방식이 부족해진 프로젝트
 
-## How Testing Fits into Workflows
+## 워크플로우에서 테스팅의 위치
 
-The QA Automate workflow appears in Phase 4 (Implementation) of the BMad Method workflow map. It is designed to run **after a full epic is complete** — once all stories in an epic have been implemented and code-reviewed. A typical sequence:
+QA Automate 워크플로우는 BMad Method 워크플로우 맵의 4단계(구현)에 해당합니다. **에픽 전체가 완료된 후**, 즉 에픽의 모든 스토리가 구현되고 코드 리뷰를 마친 후에 실행하도록 설계되었습니다. 일반적인 순서는 다음과 같습니다.
 
-1. For each story in the epic: implement with Dev (`DS`), then validate with Code Review (`CR`)
-2. After the epic is complete: generate tests with `QA` (via the Developer agent) or TEA's Automate workflow
-3. Run retrospective (`bmad-retrospective`) to capture lessons learned
+1. 에픽의 각 스토리: 개발자로 구현(`DS`), 코드 리뷰(`CR`)로 검증
+2. 에픽 완료 후: 개발자 에이전트를 통해 `QA`로 테스트 생성 또는 TEA의 Automate 워크플로우 사용
+3. 레트로스펙티브(`bmad-retrospective`) 실행으로 교훈 기록
 
-The built-in QA workflow works directly from source code without loading planning documents (PRD, architecture). TEA workflows can integrate with upstream planning artifacts for traceability.
+내장 QA 워크플로우는 계획 문서(PRD, 아키텍처)를 불러오지 않고 소스 코드에서 직접 작동합니다. TEA 워크플로우는 추적성을 위해 상위 계획 산출물과 통합할 수 있습니다.
 
-For more on where testing fits in the overall process, see the [Workflow Map](./workflow-map.md).
+테스팅이 전체 프로세스에서 어떤 위치를 차지하는지 자세히 알아보려면 [워크플로우 맵](./workflow-map.md)을 참고하세요.
